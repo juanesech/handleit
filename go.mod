@@ -1,4 +1,4 @@
-module github.com/juanesech/handleit/hello
+module github.com/juanesech/handleit
 
 go 1.16
 
