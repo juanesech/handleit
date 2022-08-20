@@ -10,6 +10,7 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/modules", module.List)
+	router.GET("/modules/:name", module.Get)
 	router.POST("/modules", module.New)
 	router.POST("/config", config.Set)
 

@@ -7,13 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var Conf Config
+
 type Config struct {
-	ModuleSource string `json: "moduleSource"`
+	ModuleSource string `json:"moduleSource"`
 }
 
 func Set(ctx *gin.Context) {
-	var config Config
-	ctx.BindJSON(&config)
-	message := fmt.Sprintf("Module %s posted", config.ModuleSource)
+	ctx.BindJSON(&Conf)
+	message := fmt.Sprintf("Config %s posted", Conf.ModuleSource)
 	ctx.String(http.StatusOK, message)
 }
