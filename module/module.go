@@ -2,9 +2,11 @@ package module
 
 import (
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
+	"path/filepath"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"
@@ -14,7 +16,17 @@ import (
 //Just for testing proposes
 var Database []tfconfig.Module
 
-func List(ctx *gin.Context) {
+type ModuleResume struct {
+	Name      string
+	Providers map[string]*tfconfig.ProviderRequirement
+}
+
+func GetModuleName(path string) string {
+	return filepath.Base(path)
+}
+
+func GetModulesFromFS() []tfconfig.Module {
+	var moduleList []tfconfig.Module
 	files, err := ioutil.ReadDir(config.Conf.ModuleSource)
 	if err != nil {
 		log.Fatal(err)
@@ -22,9 +34,23 @@ func List(ctx *gin.Context) {
 
 	for _, f := range files {
 		modulePath := fmt.Sprintf("%s/%s", config.Conf.ModuleSource, f.Name())
-		Database = append(Database, *ParseModule(modulePath))
+		moduleList = append(moduleList, *ParseModule(modulePath))
 	}
-	ctx.JSON(http.StatusOK, Database)
+
+	return moduleList
+}
+
+func List(ctx *gin.Context) {
+	var moduleList []ModuleResume
+
+	for _, module := range GetModulesFromFS() {
+		moduleResume := &ModuleResume{
+			Name:      GetModuleName(module.Path),
+			Providers: module.RequiredProviders,
+		}
+		moduleList = append(moduleList, *moduleResume)
+	}
+	ctx.JSON(http.StatusOK, moduleList)
 }
 
 func New(ctx *gin.Context) {
@@ -38,5 +64,11 @@ func New(ctx *gin.Context) {
 func Get(ctx *gin.Context) {
 	moduleName := ctx.Param("name")
 	module := ParseModule(fmt.Sprintf("%s/%s", config.Conf.ModuleSource, moduleName))
-	ctx.JSON(http.StatusOK, module)
+
+	if module.Diagnostics != nil {
+		ctx.JSON(http.StatusNotFound, module.Diagnostics)
+		log.Error(module.Diagnostics.Error())
+	} else {
+		ctx.JSON(http.StatusOK, module)
+	}
 }

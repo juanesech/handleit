@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,6 +14,5 @@ type Config struct {
 
 func Set(ctx *gin.Context) {
 	ctx.BindJSON(&Conf)
-	message := fmt.Sprintf("Config %s posted", Conf.ModuleSource)
-	ctx.String(http.StatusOK, message)
+	ctx.JSON(http.StatusOK, Conf)
 }
