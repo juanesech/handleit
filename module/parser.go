@@ -4,8 +4,14 @@ import (
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 )
 
-func ParseModule(path string) *tfconfig.Module {
+func ParseModule(path string) *Module {
+	var parsedModule *Module
 	module, _ := tfconfig.LoadModule(path)
-
-	return module
+	parsedModule = &Module{
+		Name:      GetModuleName(path),
+		Variables: module.Variables,
+		Outputs:   module.Outputs,
+		Providers: module.RequiredProviders,
+	}
+	return parsedModule
 }
