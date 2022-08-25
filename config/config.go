@@ -1,38 +1,85 @@
 package config
 
 import (
+	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	db "github.com/juanesech/handleit/database"
 	"github.com/juanesech/handleit/utils"
+	log "github.com/sirupsen/logrus"
 )
 
 type Config struct {
-	ModuleSource string `json:"moduleSource"`
+	Sources []ModuleSource
+}
+
+type ModuleSource struct {
+	ID      string
+	Name    string `json:"name"`
+	Type    string `json:"type"`
+	Address string `json:"address"`
+	Auth    string `json:"auth"`
 }
 
 func Set(ctx *gin.Context) {
-	var conf *Config
+	var sourceFromReq *ModuleSource
+	var sourcesFromDB []*ModuleSource
+	var source *ModuleSource
 
-	session, sessionErr := db.Client.OpenSession("handleit")
+	ctx.BindJSON(&sourceFromReq)
+
+	session, sessionErr := db.Client.OpenSession(db.Name)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 
-	utils.CheckError(session.Load(&conf, "configs/33-A"))
-	utils.CheckError(session.Store(conf))
-	utils.CheckError(session.SaveChanges())
+	query := session.QueryCollectionForType(reflect.TypeOf(&ModuleSource{})).WhereEquals("name", sourceFromReq.Name)
+	utils.CheckError(query.GetResults(&sourcesFromDB))
 
-	ctx.JSON(http.StatusOK, conf)
+	if len(sourcesFromDB) != 0 {
+		sourceFromReq.ID = sourcesFromDB[0].ID
+		session.Load(&source, sourcesFromDB[0].ID)
+		log.Info("Source ID: ", source.ID)
+		source.Name = sourceFromReq.Name
+		source.Address = sourceFromReq.Address
+		source.Auth = sourceFromReq.Auth
+		source.Type = sourceFromReq.Type
+		utils.CheckError(session.Store(source))
+	} else {
+		utils.CheckError(session.Store(sourceFromReq))
+	}
+
+	utils.CheckError(session.SaveChanges())
+	ctx.JSON(http.StatusOK, sourceFromReq)
 }
 
-func Get() *Config {
-	var conf *Config
-	session, sessionErr := db.Client.OpenSession("handleit")
+func Get(ctx *gin.Context) {
+	var source ModuleSource = GetSource(ctx.Param("name"))
+	log.Info("SOURCE ID", source.ID)
+
+	if source.ID != "" {
+		ctx.JSON(http.StatusOK, source)
+	} else {
+		ctx.String(http.StatusNotFound, fmt.Sprintf("Source %s not found", ctx.Param("name")))
+	}
+}
+
+func GetSource(sourceName string) ModuleSource {
+	var source *ModuleSource
+	var sourcesFromDB []*ModuleSource
+	session, sessionErr := db.Client.OpenSession(db.Name)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 
-	utils.CheckError(session.Load(&conf, "configs/33-A"))
+	query := session.QueryCollectionForType(reflect.TypeOf(&ModuleSource{})).WhereEquals("name", sourceName)
+	utils.CheckError(query.GetResults(&sourcesFromDB))
 
-	return conf
+	if len(sourcesFromDB) != 0 {
+		utils.CheckError(session.Load(&source, sourcesFromDB[0].ID))
+	} else {
+		log.Errorf("Module source with name %s not found", sourceName)
+	}
+
+	return *source
 }

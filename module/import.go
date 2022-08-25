@@ -13,7 +13,7 @@ import (
 func Import(ctx *gin.Context) {
 	var modulesFromFS []*Module = getModulesFromFS()
 
-	session, sessionErr := db.Client.OpenSession("handleit")
+	session, sessionErr := db.Client.OpenSession(db.Name)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 

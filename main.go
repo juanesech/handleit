@@ -17,6 +17,7 @@ func main() {
 	router.GET("/modules", module.List)
 	router.GET("/modules/:name", module.Get)
 	router.POST("/config", config.Set)
+	router.GET("/config/:name", config.Get)
 
 	router.Run()
 }

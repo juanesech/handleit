@@ -15,13 +15,13 @@ func GetModuleName(path string) string {
 
 func getModulesFromFS() []*Module {
 	var moduleList []*Module
-	files, err := ioutil.ReadDir(config.Get().ModuleSource)
+	files, err := ioutil.ReadDir(config.GetSource("default").Address)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, f := range files {
-		modulePath := fmt.Sprintf("%s/%s", config.Get().ModuleSource, f.Name())
+		modulePath := fmt.Sprintf("%s/%s", config.GetSource("default").Address, f.Name())
 		moduleList = append(moduleList, ParseModule(modulePath))
 	}
 
