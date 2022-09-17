@@ -10,7 +10,7 @@ import (
 
 var ListenAddr = "localhost:8080"
 
-func main() {
+func setupRouter() *gin.Engine {
 	router := gin.Default()
 
 	router.POST("/modules/import", module.Import)
@@ -19,5 +19,10 @@ func main() {
 	router.POST("/config", config.Set)
 	router.GET("/config/:name", config.Get)
 
-	router.Run()
+	return router
+}
+
+func main() {
+	r := setupRouter()
+	r.Run()
 }

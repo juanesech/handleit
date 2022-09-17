@@ -56,7 +56,7 @@ func Set(ctx *gin.Context) {
 
 func Get(ctx *gin.Context) {
 	var source ModuleSource = GetSource(ctx.Param("name"))
-	log.Info("SOURCE ID", source.ID)
+	log.Info("SOURCE ID: ", source.ID)
 
 	if source.ID != "" {
 		ctx.JSON(http.StatusOK, source)
@@ -78,7 +78,8 @@ func GetSource(sourceName string) ModuleSource {
 	if len(sourcesFromDB) != 0 {
 		utils.CheckError(session.Load(&source, sourcesFromDB[0].ID))
 	} else {
-		log.Errorf("Module source with name %s not found", sourceName)
+		log.Warnf("Module source with name %s not found", sourceName)
+		source = &ModuleSource{ID: ""}
 	}
 
 	return *source
