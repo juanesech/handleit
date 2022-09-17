@@ -6,18 +6,33 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
+	"github.com/juanesech/handleit/config"
 	db "github.com/juanesech/handleit/database"
 	"github.com/juanesech/handleit/utils"
 )
 
 func Import(ctx *gin.Context) {
-	var modulesFromFS []*Module = getModulesFromFS()
+	var rqConfig *ImportRequest
+	var source config.ModuleSource
+	var modsFromSource []*Module
+
+	ctx.BindJSON(&rqConfig)
+
+	source = config.GetSource(rqConfig.Name)
+
+	switch ct := source.Type; ct {
+	case "FileSystem":
+		modsFromSource = getModulesFromFS(source.Address)
+
+	case "GitLab":
+		log.Info("Get from GitLab")
+	}
 
 	session, sessionErr := db.Client.OpenSession(db.Name)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 
-	for _, module := range modulesFromFS {
+	for _, module := range modsFromSource {
 		var modulesFromDB []*Module
 		var loadedModule *Module
 
