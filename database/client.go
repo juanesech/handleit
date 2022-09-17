@@ -7,7 +7,7 @@ import (
 
 var DBAddress = "http://localhost:8083"
 
-const Name = "handleit"
+const Name = "topo"
 
 func GetClient(databaseName string) *ravendb.DocumentStore {
 	serverNodes := []string{DBAddress}
