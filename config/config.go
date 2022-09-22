@@ -20,6 +20,7 @@ type ModuleSource struct {
 	Name    string `json:"name"`
 	Type    string `json:"type"`
 	Address string `json:"address"`
+	Group   string `json:"group"`
 	Auth    string `json:"auth"`
 }
 
@@ -45,6 +46,7 @@ func Set(ctx *gin.Context) {
 		source.Address = sourceFromReq.Address
 		source.Auth = sourceFromReq.Auth
 		source.Type = sourceFromReq.Type
+		source.Group = sourceFromReq.Group
 		utils.CheckError(session.Store(source))
 	} else {
 		utils.CheckError(session.Store(sourceFromReq))

@@ -15,7 +15,7 @@ func Get(ctx *gin.Context) {
 	var loadedModule *Module
 	var module Module
 
-	session, sessionErr := db.Client.OpenSession("handleit")
+	session, sessionErr := db.Client.OpenSession(db.Name)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 

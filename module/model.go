@@ -14,3 +14,7 @@ type Module struct {
 	Outputs   map[string]*tfconfig.Output
 	Providers map[string]*tfconfig.ProviderRequirement
 }
+
+type ImportRequest struct {
+	Name string `json:"name"`
+}
