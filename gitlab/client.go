@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/juanesech/handleit/utils"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -50,7 +51,7 @@ func (provider *Gitlab) request(req *http.Request) (response *http.Response, err
 		// ask for a new refresh token
 		response.Body.Close()
 		response, err = provider.request(clonedReq)
-
+		utils.CheckError(err)
 	}
 
 	return response, err

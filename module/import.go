@@ -1,13 +1,16 @@
 package module
 
 import (
+	"fmt"
 	"reflect"
 
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/juanesech/handleit/config"
 	db "github.com/juanesech/handleit/database"
+	gl "github.com/juanesech/handleit/gitlab"
 	"github.com/juanesech/handleit/utils"
 )
 
@@ -25,7 +28,13 @@ func Import(ctx *gin.Context) {
 		modsFromSource = getModulesFromFS(source.Address)
 
 	case "GitLab":
-		log.Info("Get from GitLab")
+		mp := gl.GetProjects(source, gl.GetGroup(source).Id)
+		folder := uuid.NewString()
+
+		for _, p := range mp {
+			utils.Clone(fmt.Sprintf("%s/%s", folder, p.Name), source.Auth, p.Url)
+		}
+		modsFromSource = getModulesFromFS(fmt.Sprintf("/tmp/%s", folder))
 	}
 
 	session, sessionErr := db.Client.OpenSession(db.Name)

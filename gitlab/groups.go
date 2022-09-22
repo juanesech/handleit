@@ -15,19 +15,20 @@ import (
 type Group struct {
 	Name string `json:"name"`
 	Id   int    `json:"id"`
-	Path string `json:"path"`
+	Path string `json:"full_path"`
 }
 
 func (g Group) IsEmpty() bool {
 	return reflect.DeepEqual(Group{}, g)
 }
 
-func GetGroup(name string) Group {
-	glconfig := config.GetSource("gitlab")
+func GetGroup(source config.ModuleSource) Group {
+	name := utils.GetLast(source.Group, "/")
+
 	path := fmt.Sprintf("/api/v4/groups?search=%v", name)
 	gitlab := &Gitlab{
-		Url:   glconfig.Address,
-		Token: glconfig.Auth,
+		Url:   source.Address,
+		Token: source.Auth,
 		Client: &http.Client{
 			Timeout: time.Duration(30 * time.Second),
 		},
@@ -39,13 +40,13 @@ func GetGroup(name string) Group {
 
 	var retGroup Group
 	for _, rg := range *respGroup {
-		if rg.Name == name {
+		if rg.Name == name && rg.Path == source.Group {
 			retGroup = rg
 		}
 	}
 
 	if retGroup.IsEmpty() {
-		log.Error("Group not found")
+		log.Errorf("Group %s not found", name)
 	}
 
 	return retGroup
