@@ -1,0 +1,17 @@
+services:
+  back:
+    build: back/
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_ADDRESS=http://raven:8080
+    links:
+      - raven
+    restart: always
+  raven:
+    image: ravendb/ravendb
+    ports:
+      - "8083:8080"
+      - "38888:38888"
+    volumes:
+      - ./ravendb:/opt/RavenDB/Server/RavenData

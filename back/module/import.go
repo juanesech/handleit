@@ -8,10 +8,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/juanesech/handleit/config"
-	db "github.com/juanesech/handleit/database"
-	gl "github.com/juanesech/handleit/gitlab"
-	"github.com/juanesech/handleit/utils"
+	"github.com/juanesech/topo/config"
+	db "github.com/juanesech/topo/database"
+	gl "github.com/juanesech/topo/gitlab"
+	"github.com/juanesech/topo/utils"
 )
 
 func Import(ctx *gin.Context) {

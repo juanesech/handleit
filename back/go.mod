@@ -1,4 +1,4 @@
-module github.com/juanesech/handleit
+module github.com/juanesech/topo
 
 go 1.18
 

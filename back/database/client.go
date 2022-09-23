@@ -1,11 +1,13 @@
 package database
 
 import (
+	"os"
+
 	"github.com/ravendb/ravendb-go-client"
 	log "github.com/sirupsen/logrus"
 )
 
-var DBAddress = "http://localhost:8083"
+var DBAddress = os.Getenv("DB_ADDRESS")
 
 const Name = "topo"
 

@@ -6,8 +6,8 @@ import (
 	"reflect"
 
 	"github.com/gin-gonic/gin"
-	db "github.com/juanesech/handleit/database"
-	"github.com/juanesech/handleit/utils"
+	db "github.com/juanesech/topo/database"
+	"github.com/juanesech/topo/utils"
 )
 
 func Get(ctx *gin.Context) {
