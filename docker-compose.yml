@@ -13,5 +13,10 @@ services:
     ports:
       - "8083:8080"
       - "38888:38888"
+    environment:
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+      - RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork
+      - RAVEN_ARGS=--log-to-console
     volumes:
       - ./ravendb:/opt/RavenDB/Server/RavenData

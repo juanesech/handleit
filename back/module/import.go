@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/juanesech/topo/config"
+	"github.com/juanesech/topo/constants"
 	db "github.com/juanesech/topo/database"
 	gl "github.com/juanesech/topo/gitlab"
 	"github.com/juanesech/topo/utils"
@@ -37,7 +38,7 @@ func Import(ctx *gin.Context) {
 		modsFromSource = getModulesFromFS(fmt.Sprintf("/tmp/%s", folder))
 	}
 
-	session, sessionErr := db.Client.OpenSession(db.Name)
+	session, sessionErr := db.Client.OpenSession(constants.DBName)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 

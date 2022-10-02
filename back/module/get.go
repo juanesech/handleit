@@ -6,6 +6,7 @@ import (
 	"reflect"
 
 	"github.com/gin-gonic/gin"
+	"github.com/juanesech/topo/constants"
 	db "github.com/juanesech/topo/database"
 	"github.com/juanesech/topo/utils"
 )
@@ -15,7 +16,7 @@ func Get(ctx *gin.Context) {
 	var loadedModule *Module
 	var module Module
 
-	session, sessionErr := db.Client.OpenSession(db.Name)
+	session, sessionErr := db.Client.OpenSession(constants.DBName)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 

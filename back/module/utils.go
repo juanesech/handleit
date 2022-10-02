@@ -2,10 +2,10 @@ package module
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/juanesech/topo/utils"
 )
 
 func GetModuleName(path string) string {
@@ -14,10 +14,8 @@ func GetModuleName(path string) string {
 
 func getModulesFromFS(path string) []*Module {
 	var moduleList []*Module
-	files, err := ioutil.ReadDir(path)
-	if err != nil {
-		log.Fatal(err)
-	}
+	files, err := os.ReadDir(path)
+	utils.CheckError(err)
 
 	for _, f := range files {
 		modulePath := fmt.Sprintf("%s/%s", path, f.Name())
