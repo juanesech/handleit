@@ -5,6 +5,7 @@ services:
       - "8080:8080"
     environment:
       - DB_ADDRESS=http://raven:8080
+      - DB_NAME=topo
     links:
       - raven
     restart: always
