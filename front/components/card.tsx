@@ -1,5 +1,4 @@
-import { createStyles, Paper, Text, ThemeIcon } from '@mantine/core';
-import { IconColorSwatch } from '@tabler/icons';
+import { createStyles, Paper, Text } from '@mantine/core';
 import { FunctionComponent } from 'react';
 
 const useStyles = createStyles((theme) => ({
@@ -36,19 +35,11 @@ interface CardGradientProps {
 const CardGradient: FunctionComponent<CardGradientProps> = ({ title, description }: CardGradientProps) => {
   const { classes } = useStyles();
   return (
-    <Paper withBorder radius="md" className={classes.card}>
-      <ThemeIcon
-        size="xl"
-        radius="md"
-        variant="gradient"
-        gradient={{ deg: 0, from: 'pink', to: 'orange' }}
-      >
-        <IconColorSwatch size={28} stroke={1.5} />
-      </ThemeIcon>
-      <Text size="xl" weight={500} mt="md">
+    <Paper withBorder radius="sm" className={classes.card}>
+      <Text size="xl" weight={600} mt="s">
         {title}
       </Text>
-      <Text size="sm" mt="sm" color="dimmed">
+      <Text size="sm" mt="s" color="dimmed">
         {description}
       </Text>
     </Paper>
