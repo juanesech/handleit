@@ -1,25 +1,25 @@
 export interface ModuleSummary {
-  name: string
-  providers: {
+  Name: string
+  Providers: {
     source: string
   }[]
 }
 
 export interface Module {
-  id: string;
-  name: string;
-  variables: {
+  Id: string;
+  Name: string;
+  Variables: {
     name: string
     type: string
     description: string
     default: string
     required: boolean
-  },
-  outputs: {
+  }[],
+  Outputs: {
     name: string
     description: string
-  },
-  providers: {
+  }[],
+  Providers: {
     source: string
     versionConstrains: string[]
   }[]

@@ -2,30 +2,45 @@ import axios from 'axios'
 import { Module, ModuleSummary } from '../../interfaces/modules'
 
 
-const getModules = async () => {
+export const GetModules = async () => {
+  let modules:Array<ModuleSummary> = []
   try {
     const response = await axios.get(`http://localhost:8080/modules`);
-    console.log(response);
     let data = await response.data;
-    let modules:Array<ModuleSummary> = data.map( mod => {
-      return {
-        name: mod.Name,
-        providers: mod.Providers
-      }
-    })
-    return modules
-  } catch (error) {
-    console.log(error)
+    modules = data;
+  } catch (err) {
+    new Error(`Error listing the modules: ${err}`)
   }
+  return modules;
 }
 
-export function ListModules(): Array<ModuleSummary> {
-  let modules =  getModules()
-  .then( modules => { modules })
-  .catch( err => {
-    console.log(err)
-    return [{name: "", providers: []}]
-  })
-  console.log("MODULE TYPE: ", typeof modules)
-  return []
+export const GetModule = async ( name: string ) => {
+  let module: Module = {
+    Name: "",
+    Id: "",
+    Variables: [{
+      name: "",
+      description: "",
+      default: "",
+      required: false,
+      type: ""
+    }],
+    Outputs: [{
+      name: "",
+      description: ""
+    }],
+    Providers: [{
+      source: "",
+      versionConstrains: [""]
+    }], 
+  };
+  try {
+    const response = await axios.get(`http://localhost:8080/modules/${name}`);
+    console.log(response);
+    let data = await response.data;
+    module = data;
+  } catch (err) {
+    new Error(`Error getting module ${name}: ${err}`)
+  }
+  return module;
 }

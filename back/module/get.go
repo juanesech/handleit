@@ -15,6 +15,7 @@ func Get(ctx *gin.Context) {
 	var modulesFromDB []*Module
 	var loadedModule *Module
 	var module Module
+	ctx.Header("Access-Control-Allow-Origin", "*")
 
 	session, sessionErr := db.Client.OpenSession(constants.DBName)
 	utils.CheckError(sessionErr)

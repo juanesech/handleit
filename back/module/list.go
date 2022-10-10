@@ -28,5 +28,6 @@ func List(ctx *gin.Context) {
 		}
 		moduleList = append(moduleList, *moduleResume)
 	}
+	ctx.Header("Access-Control-Allow-Origin", "*")
 	ctx.JSON(http.StatusOK, moduleList)
 }
