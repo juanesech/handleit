@@ -1,5 +1,6 @@
 import { createStyles, Paper, Text } from '@mantine/core';
 import { FunctionComponent } from 'react';
+import Link from 'next/link';
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -35,14 +36,16 @@ interface CardGradientProps {
 const CardGradient: FunctionComponent<CardGradientProps> = ({ title, description }: CardGradientProps) => {
   const { classes } = useStyles();
   return (
-    <Paper withBorder radius="sm" className={classes.card}>
-      <Text size="xl" weight={600} mt="s">
-        {title}
-      </Text>
-      <Text size="sm" mt="s" color="dimmed">
-        {description}
-      </Text>
-    </Paper>
+    <Link href={`modules/${title}`}>
+      <Paper withBorder radius="sm" className={classes.card}>
+        <Text size="xl" weight={600} mt="s">
+          {title}
+        </Text>
+        <Text size="sm" mt="s" color="dimmed">
+          {description}
+        </Text>
+      </Paper>
+    </Link>
   );
 }
 

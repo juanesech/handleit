@@ -1,5 +1,6 @@
 import { createStyles, Header, Container, Group, Burger, Paper, Transition } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import Link from 'next/link';
 import React, { FunctionComponent, useState } from 'react'
 
 const HEADER_HEIGHT = 60;
@@ -83,18 +84,19 @@ const HeaderResponsive: FunctionComponent<HeaderResponsiveProps> = ({ links }: H
   const { classes, cx } = useStyles();
 
   const items = links.map((link) => (
-    <a
-      key={link.label}
-      href={link.link}
-      className={cx(classes.link, { [classes.linkActive]: active === link.link })}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(link.link);
-        close();
-      }}
-    >
-      {link.label}
-    </a>
+    <Link href={link.link}>
+      <a
+        key={link.label}
+        className={cx(classes.link, { [classes.linkActive]: active === link.link })}
+        onClick={(event) => {
+          event.preventDefault();
+          setActive(link.link);
+          close();
+        }}
+      >
+        {link.label}
+      </a>
+    </Link>
   ));
 
   return (

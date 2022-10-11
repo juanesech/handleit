@@ -4,6 +4,7 @@ import ModulePreview from '../../components/card'
 import { ModuleSummary } from '../../interfaces/modules'
 import { GetModules } from './modules'
 import { useEffect, useState } from 'react'
+import { Container } from '@mantine/core'
 
 const ModuleList: NextPage = () => {
 
@@ -25,17 +26,19 @@ const ModuleList: NextPage = () => {
       <HeaderResponsive links={[
         {
           label: "modules",
-          link: "/"
+          link: "modules/"
         }
       ]}/>
-      {modules.map( (module: ModuleSummary) => {
-        return(
-        <ModulePreview 
-          title={module.Name}
-          description={`Source: ${module.Providers}`}
-        />
-        )
-      })}
+      <Container my="xl">
+        {modules.map( (module: ModuleSummary) => {
+          return(
+          <ModulePreview 
+            title={module.Name}
+            description={`Source: ${module.Providers}`}
+          />
+          )
+        })}
+      </Container>
     </>
   )
 }
