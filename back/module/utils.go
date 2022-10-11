@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"github.com/juanesech/topo/utils"
 )
 
@@ -23,4 +24,31 @@ func getModulesFromFS(path string) []*Module {
 	}
 
 	return moduleList
+}
+
+func varToArray(vars map[string]*tfconfig.Variable) []Variable {
+	array := []Variable{}
+	var va = Variable{}
+	for k, v := range vars {
+		va.Name = k
+		va.Description = v.Description
+		va.Type = v.Type
+		va.Default = fmt.Sprintf(`%v`, v.Default)
+		va.Required = v.Required
+
+		array = append(array, va)
+	}
+	return array
+}
+
+func outToArray(vars map[string]*tfconfig.Output) []Output {
+	array := []Output{}
+	var ou = Output{}
+	for k, v := range vars {
+		ou.Name = k
+		ou.Description = v.Description
+
+		array = append(array, ou)
+	}
+	return array
 }

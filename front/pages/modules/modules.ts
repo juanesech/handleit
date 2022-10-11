@@ -17,17 +17,17 @@ export const GetModules = async () => {
 export const GetModule = async ( name: string ) => {
   let module: Module = {
     Name: "",
-    Id: "",
+    ID: "",
     Variables: [{
-      name: "",
-      description: "",
-      default: "",
-      required: false,
-      type: ""
+      Name: "",
+      Description: "",
+      Default: "",
+      Required: false,
+      Type: ""
     }],
     Outputs: [{
-      name: "",
-      description: ""
+      Name: "",
+      Description: ""
     }],
     Providers: [{
       source: "",

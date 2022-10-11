@@ -9,16 +9,10 @@ import { useRouter } from 'next/router';
 const useStyles = createStyles((theme) => ({
   card: {
     position: 'relative',
-    cursor: 'pointer',
     overflow: 'hidden',
-    transition: 'transform 150ms ease, box-shadow 100ms ease',
+   
     padding: theme.spacing.xl,
     paddingLeft: theme.spacing.xl * 2,
-
-    '&:hover': {
-      boxShadow: theme.shadows.md,
-      transform: 'scale(1.02)',
-    },
 
     '&::before': {
       content: '""',
@@ -27,7 +21,7 @@ const useStyles = createStyles((theme) => ({
       bottom: 0,
       left: 0,
       width: 6,
-      backgroundImage: theme.fn.linearGradient(0, theme.colors.pink[6], theme.colors.orange[6]),
+      backgroundImage: theme.fn.linearGradient(0, theme.colors.pink[4], theme.colors.orange[6]),
     },
   },
 }));
@@ -37,17 +31,17 @@ const Module: NextPage = () => {
   const router = useRouter();
   const [module, setModule] = useState<Module>({
     Name: "",
-    Id: "",
+    ID: "",
     Variables: [{
-      name: "",
-      description: "",
-      default: "",
-      required: false,
-      type: ""
+      Name: "",
+      Description: "",
+      Default: "",
+      Required: false,
+      Type: ""
     }],
     Outputs: [{
-      name: "",
-      description: ""
+      Name: "",
+      Description: ""
     }],
     Providers: [{
       source: "",
@@ -64,7 +58,7 @@ const Module: NextPage = () => {
 
     getModules();
 
-  }, [module])
+  }, [])
 
 
   const { classes } = useStyles();
@@ -82,8 +76,34 @@ const Module: NextPage = () => {
           {module.Name}
         </Text>
         <Text size="sm" mt="s" color="dimmed">
-          {module.Id}
+          {module.ID}
         </Text>
+        <Text size="sm" mt="s" color="dimmed">
+          {"Variables"}
+        </Text>
+          {module.Variables.map((variable) => {
+              return (
+                <Container my={"xs"}>
+                  <Text size="sm" mt="s" color="dimmed">
+                    {variable.Name}
+                  </Text>
+                  <Container my={"xxs"}>
+                    <Text size="xs" mt="s" color="dimmed">
+                      {`Description: ${variable.Description}`}
+                    </Text>
+                    <Text size="xs" mt="s" color="dimmed">
+                      {`Required: ${variable.Required}`}         
+                    </Text>
+                    <Text size="xs" mt="s" color="dimmed">
+                      {`Default: ${variable.Default}`}         
+                    </Text>
+                    <Text size="xs" mt="s" color="dimmed">
+                      {`Type: ${variable.Type}`}         
+                    </Text>
+                  </Container>
+                </Container>
+              )
+          })}
       </Paper>
     </Container>
     </>

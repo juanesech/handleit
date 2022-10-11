@@ -6,18 +6,18 @@ export interface ModuleSummary {
 }
 
 export interface Module {
-  Id: string;
+  ID: string;
   Name: string;
   Variables: {
-    name: string
-    type: string
-    description: string
-    default: string
-    required: boolean
+    Name: string
+    Type: string
+    Description: string
+    Default: string
+    Required: boolean
   }[],
   Outputs: {
-    name: string
-    description: string
+    Name: string
+    Description: string
   }[],
   Providers: {
     source: string

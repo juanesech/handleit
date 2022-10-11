@@ -49,7 +49,7 @@ func Import(ctx *gin.Context) {
 		query := session.QueryCollectionForType(reflect.TypeOf(&Module{})).WhereEquals("Name", module.Name)
 
 		utils.CheckError(query.GetResults(&modulesFromDB))
-
+		log.Info("START SAVE TO DB: ", module.Name)
 		if len(modulesFromDB) != 0 {
 			module.ID = modulesFromDB[0].ID
 			session.Load(&loadedModule, module.ID)

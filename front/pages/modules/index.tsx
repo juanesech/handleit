@@ -19,7 +19,7 @@ const ModuleList: NextPage = () => {
 
     getModules();
 
-  }, [modules])
+  }, [])
 
   return (
     <>

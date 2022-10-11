@@ -10,9 +10,22 @@ type ModuleResume struct {
 type Module struct {
 	ID        string
 	Name      string
-	Variables map[string]*tfconfig.Variable
-	Outputs   map[string]*tfconfig.Output
+	Variables []Variable
+	Outputs   []Output
 	Providers map[string]*tfconfig.ProviderRequirement
+}
+
+type Variable struct {
+	Name        string
+	Type        string
+	Description string
+	Default     string
+	Required    bool
+}
+
+type Output struct {
+	Name        string
+	Description string
 }
 
 type ImportRequest struct {
