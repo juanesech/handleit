@@ -52,3 +52,15 @@ func outToArray(vars map[string]*tfconfig.Output) []Output {
 	}
 	return array
 }
+
+func providerToArray(vars map[string]*tfconfig.ProviderRequirement) []Provider {
+	array := []Provider{}
+	var p = Provider{}
+	for k, v := range vars {
+		p.Source = k
+		p.VersionConstraints = v.VersionConstraints
+
+		array = append(array, p)
+	}
+	return array
+}

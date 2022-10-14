@@ -11,7 +11,7 @@ func ParseModule(path string) *Module {
 		Name:      GetModuleName(path),
 		Variables: varToArray(module.Variables),
 		Outputs:   outToArray(module.Outputs),
-		Providers: module.RequiredProviders,
+		Providers: providerToArray(module.RequiredProviders),
 	}
 	return parsedModule
 }

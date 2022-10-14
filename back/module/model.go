@@ -1,10 +1,8 @@
 package module
 
-import "github.com/hashicorp/terraform-config-inspect/tfconfig"
-
 type ModuleResume struct {
 	Name      string
-	Providers map[string]*tfconfig.ProviderRequirement
+	Providers []Provider
 }
 
 type Module struct {
@@ -12,7 +10,7 @@ type Module struct {
 	Name      string
 	Variables []Variable
 	Outputs   []Output
-	Providers map[string]*tfconfig.ProviderRequirement
+	Providers []Provider
 }
 
 type Variable struct {
@@ -26,6 +24,11 @@ type Variable struct {
 type Output struct {
 	Name        string
 	Description string
+}
+
+type Provider struct {
+	Source             string
+	VersionConstraints []string
 }
 
 type ImportRequest struct {

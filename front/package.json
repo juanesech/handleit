@@ -1,35 +1,45 @@
 {
-  "name": "front",
-  "version": "0.1.0",
+  "name": "my-qwik-basic-starter",
+  "description": "Recommended for your first Qwik app",
+  "engines": {
+    "node": ">=15.0.0"
+  },
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "qwik build",
+    "build.client": "vite build",
+    "build.preview": "vite build --ssr src/entry.preview.tsx",
+    "build.types": "tsc --incremental --noEmit",
+    "dev": "vite --mode ssr",
+    "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+    "fmt": "prettier --write .",
+    "fmt.check": "prettier --check .",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "preview": "qwik build preview && vite preview --open",
+    "start": "vite --open --mode ssr",
+    "qwik": "qwik"
+  },
+  "devDependencies": {
+    "@builder.io/qwik": "0.9.0",
+    "@builder.io/qwik-city": "0.0.111",
+    "@types/eslint": "8.4.6",
+    "@types/node": "latest",
+    "@typescript-eslint/eslint-plugin": "5.37.0",
+    "@typescript-eslint/parser": "5.37.0",
+    "autoprefixer": "^10.4.12",
+    "eslint": "8.23.1",
+    "eslint-plugin-qwik": "0.9.0",
+    "node-fetch": "3.2.10",
+    "postcss": "^8.4.18",
+    "prettier": "2.7.1",
+    "tailwindcss": "^3.1.8",
+    "typescript": "4.8.3",
+    "vite": "3.1.1",
+    "vite-tsconfig-paths": "3.5.0"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
-    "@emotion/server": "^11.10.0",
-    "@mantine/core": "^5.5.4",
-    "@mantine/ds": "^5.5.4",
-    "@mantine/form": "^5.5.4",
-    "@mantine/hooks": "^5.5.4",
-    "@mantine/modals": "^5.5.4",
-    "@mantine/next": "^5.5.4",
-    "@mantine/prism": "^5.5.4",
-    "@tabler/icons": "^1.101.0",
-    "axios": "^1.1.2",
-    "next": "12.3.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
-  },
-  "devDependencies": {
-    "@types/node": "18.8.2",
-    "@types/react": "18.0.21",
-    "@types/react-dom": "18.0.6",
-    "eslint": "8.24.0",
-    "eslint-config-next": "12.3.1",
-    "typescript": "4.8.4"
+    "axios": "^0.27.2",
+    "daisyui": "^2.31.0"
   }
 }
