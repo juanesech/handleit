@@ -1,4 +1,4 @@
-import { Resource, component$ } from "@builder.io/qwik";
+import { Resource, component$, useStore } from "@builder.io/qwik";
 import { useEndpoint } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import axios from "axios";
@@ -41,6 +41,7 @@ export const onGet: RequestHandler<Module> = async ({ params }) => {
 
 export default component$(() => {
   const moduleData = useEndpoint<Module>();
+  const store = useStore({ tab:"variables" })
 
   return (
     <Resource
@@ -60,27 +61,38 @@ export default component$(() => {
               )
             })}
           </div>
-          <div class="bg-gray-50 px-4 py-5 sm:px-6">
-            <h2 class="text-2xl font-light leading-3 text-indigo-600">Variables</h2>
+          <div>
+            <ul class="flex flex-wrap text-sm font-medium text-center py-0">
+              <li class="mr-2">
+                <div class="px-4 py-5 sm:px-6 cursor-pointer border-t border-r border-l border-indigo-600 border-b-gray-50 border-b rounded-sm">
+                  <h2 class="text-2xl font-light leading-3 text-indigo-600">Variables</h2>
+                </div>
+              </li>
+              <li class="mr-2">
+                <div class="px-4 py-5 sm:px-6 cursor-pointer border-t border-r border-l border-indigo-600 rounded-sm">
+                  <h2 class="text-2xl font-light leading-3 text-indigo-600">Outputs</h2>
+                </div>
+              </li>
+            </ul>
           </div>
-          {module.Variables.map(variable => {
-            return (
-              <div class=" border-gray-200">
-                <dl>
-                  <details>
-                    <summary class="bg-gray-5 group rounded-sm cursor-pointer hover:bg-indigo-600 hover:ring-indigo-600 bg-gray-50 list-none flex flex-wrap items-center">
-                      <div class="rounded-sm bg-gray-50 px-4 py-3 sm:px-6 group-hover:bg-indigo-600 hover:ring-indigo-600">
-                        <h4 class="group-hover:text-white text-md text-gray-600">{variable.Name}</h4>
-                        <span class="align-sub text-xs font-medium inline-block py-1 px-2 rounded text-indigo-500 bg-indigo-200 lowercase last:mr-0 mr-1">
-                          {variable.Type}
+          <div class="border border-indigo-600 rounded-sm">
+            {module.Variables.map(variable => {
+              return (
+                <details>
+                  <summary class="bg-gray-50 group rounded-sm cursor-pointer hover:bg-indigo-600 hover:ring-indigo-600 list-none flex flex-wrap items-center">
+                    <div class="rounded-sm px-4 py-3 sm:px-6 group-hover:bg-indigo-600 hover:ring-indigo-600">
+                      <h4 class="group-hover:text-white text-md text-gray-600">{variable.Name}</h4>
+                      <span class="align-sub text-xs font-medium inline-block py-1 px-2 rounded text-indigo-500 bg-indigo-200 lowercase last:mr-0 mr-1">
+                        {variable.Type}
+                      </span>
+                      {variable.Required ?
+                        <span class="align-sub text-xs font-medium inline-block py-1 px-2 rounded text-red-500 bg-red-200 lowercase last:mr-0 mr-1">
+                          required
                         </span>
-                        {variable.Required ?
-                          <span class="align-sub text-xs font-medium inline-block py-1 px-2 rounded text-red-500 bg-red-200 lowercase last:mr-0 mr-1">
-                            required
-                          </span>
-                          : <></>}
-                      </div>
-                    </summary>
+                        : <></>}
+                    </div>
+                  </summary>
+                  <dl>
                     <div class=" bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                       <dt class="text-xs font-medium text-gray-500">Description</dt>
                       <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Description}</dd>
@@ -97,12 +109,11 @@ export default component$(() => {
                       <dt class="text-xs font-medium text-gray-500">Default value</dt>
                       <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Default}</dd>
                     </div>
-                  </details>
-                </dl>
-              </div>
-            )
-          })}
-          <h2 class=" mt-8 text-2xl font-light leading-3 sm:px-2 m-3 text-indigo-600">Outputs</h2>
+                  </dl>
+                </details>
+              )
+            })}
+          </div>
         </div>
       )}
     />
