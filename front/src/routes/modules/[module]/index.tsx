@@ -23,7 +23,7 @@ interface Module {
   }[]
 }
 
-export const onGet: RequestHandler<Module> =async ({ params }) => {
+export const onGet: RequestHandler<Module> = async ({ params }) => {
   try {
     const response = await axios.get(`http://localhost:8080/modules/${params.module}`);
     let data = await response.data;
@@ -48,43 +48,61 @@ export default component$(() => {
       onPending={() => <div>Loading...</div>}
       onRejected={() => <div>Error</div>}
       onResolved={(module) => (
-        <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+        <div class="overflow-hidden bg-white sm:rounded-sm rounded-sm">
           <div class="px-4 py-5 sm:px-6">
-            <h2 class="text-xl font-medium leading-6 text-gray-900">{module.Name}</h2>
-            <p class="mt-1 max-w-2xl text-sm text-gray-500">{module.ID}</p>
+            <h2 class="text-4xl font-light leading-6 text-indigo-700">{module.Name}</h2>
+            <p class="mt-1 max-w-2xl text-md text-gray-500">{module.ID}</p>
+            {module.Providers.map(prov => {
+              return (
+                <span class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-500 bg-indigo-200 lowercase last:mr-0 mr-1">
+                  {prov.Source}
+                </span>
+              )
+            })}
           </div>
-            <details open>
-              <summary class="list-none">
-                <h2 class="cursor-pointer text-lg font-medium leading-3 sm:px-4 m-3">Variables</h2>
-              </summary>
-                <div aria-labelledby="headingOne"
-                  data-bs-parent="#accordionExample">
-                    {module.Variables.map(variable => {
-                      return(
-                        <div class="border-t border-gray-200">
-                          <dl>
-                            <h2 class="text-sm">{variable.Name}</h2>
-                            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                              <dt class="text-sm font-medium text-gray-500">Description</dt>
-                              <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{variable.Description}</dd>
-                            </div>
-                            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                              <dt class="text-sm font-medium text-gray-500">Type</dt>
-                              <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{variable.Type}</dd>
-                            </div>
-                            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                              <dt class="text-sm font-medium text-gray-500">Required</dt>
-                              <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{String(variable.Required)}</dd>
-                            </div>
-                            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                              <dt class="text-sm font-medium text-gray-500">Default value</dt>
-                              <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{variable.Default}</dd>
-                            </div>
-                          </dl>
-                        </div>
-                      )})}
-                </div>
-            </details>
+          <div class="bg-gray-50 px-4 py-5 sm:px-6">
+            <h2 class="text-2xl font-light leading-3 text-indigo-600">Variables</h2>
+          </div>
+          {module.Variables.map(variable => {
+            return (
+              <div class=" border-gray-200">
+                <dl>
+                  <details>
+                    <summary class="bg-gray-5 group rounded-sm cursor-pointer hover:bg-indigo-600 hover:ring-indigo-600 bg-gray-50 list-none flex flex-wrap items-center">
+                      <div class="rounded-sm bg-gray-50 px-4 py-3 sm:px-6 group-hover:bg-indigo-600 hover:ring-indigo-600">
+                        <h4 class="group-hover:text-white text-md text-gray-600">{variable.Name}</h4>
+                        <span class="align-sub text-xs font-medium inline-block py-1 px-2 rounded text-indigo-500 bg-indigo-200 lowercase last:mr-0 mr-1">
+                          {variable.Type}
+                        </span>
+                        {variable.Required ?
+                          <span class="align-sub text-xs font-medium inline-block py-1 px-2 rounded text-red-500 bg-red-200 lowercase last:mr-0 mr-1">
+                            required
+                          </span>
+                          : <></>}
+                      </div>
+                    </summary>
+                    <div class=" bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <dt class="text-xs font-medium text-gray-500">Description</dt>
+                      <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Description}</dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <dt class="text-xs font-medium text-gray-500">Type</dt>
+                      <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Type}</dd>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <dt class="text-xs font-medium text-gray-500">Required</dt>
+                      <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{String(variable.Required)}</dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <dt class="text-xs font-medium text-gray-500">Default value</dt>
+                      <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Default}</dd>
+                    </div>
+                  </details>
+                </dl>
+              </div>
+            )
+          })}
+          <h2 class=" mt-8 text-2xl font-light leading-3 sm:px-2 m-3 text-indigo-600">Outputs</h2>
         </div>
       )}
     />
