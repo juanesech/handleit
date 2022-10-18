@@ -30,7 +30,7 @@ func Set(ctx *gin.Context) {
 	var sourcesFromDB []*ModuleSource
 	var source *ModuleSource
 
-	ctx.BindJSON(&sourceFromReq)
+	utils.CheckError(ctx.BindJSON(&sourceFromReq))
 
 	session, sessionErr := db.Client.OpenSession(constants.DBName)
 	utils.CheckError(sessionErr)

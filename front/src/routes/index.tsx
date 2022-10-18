@@ -34,12 +34,12 @@ export default component$(() => {
         <div class="block content-center mx-auto max-w-xl">
           {moduleList.map(module => {
             return (
-              <a href={`/modules/${module.Name}`} class="m-2 group block mx-auto rounded-sm p-4 bg-white ring-1 hover:bg-indigo-600 hover:ring-indigo-600">
+              <a href={`/modules/${module.Name}`} class="m-2 group block mx-auto rounded-sm p-4 bg-white ring-1 hover:bg-blue-600 hover:ring-blue-600">
                 <div>
                   <div class="group-hover:text-white text-lg font-medium text-black">{module.Name}</div>
                     {module.Providers.map(prov => {
                       return(
-                        <span class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-500 bg-indigo-200 lowercase last:mr-0 mr-1">
+                        <span class="text-xs font-regular inline-block py-1 px-2 rounded lowercase last:mr-0 mr-1  group-hover:text-blue-500 bg-blue-100 group-hover:font-semibold">
                           {prov.Source}
                         </span>
                       )

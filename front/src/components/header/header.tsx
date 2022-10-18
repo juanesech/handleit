@@ -12,11 +12,11 @@ export default component$(() => {
             </a>
           </div>
           <nav class="hidden space-x-10 md:flex">
-            <a href="/" class="text-base font-medium text-gray-500 hover:text-indigo-700">Modules</a>
-            <a href="#" class="text-base font-medium text-gray-500 hover:text-indigo-700">Settings</a>
+            <a href="/" class="text-base font-medium text-gray-500 hover:text-blue-700">Modules</a>
+            <a href="/settings" class="text-base font-medium text-gray-500 hover:text-blue-700">Settings</a>
           </nav>
           <div class="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-            <a href="#" class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Sign in</a>
+            <a href="#" class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700">Sign in</a>
           </div>
         </div>
       </div>

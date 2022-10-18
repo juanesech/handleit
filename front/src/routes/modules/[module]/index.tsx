@@ -45,14 +45,14 @@ export const onGet: RequestHandler<Module> = async ({ params }) => {
 
 export const variablesTab = (variables: Variable[]) => {
   return (
-    <div class="border border-sky-600 rounded-sm">
+    <div class="rounded-sm">
       {variables.map(variable => {
         return (
           <details>
-            <summary class="bg-gray-50 group rounded-sm cursor-pointer hover:bg-sky-600 hover:ring-sky-600 list-none flex flex-wrap items-center">
-              <div class="rounded-sm px-4 py-3 sm:px-6 group-hover:bg-sky-600 hover:ring-sky-600">
+            <summary class="bg-gray-100 group cursor-pointer hover:bg-blue-600 hover:ring-blue-600 list-none flex flex-wrap items-center rounded-sm">
+              <div class="rounded-sm px-4 py-3 sm:px-6 group-hover:bg-blue-600 hover:ring-blue-600">
                 <h4 class="group-hover:text-white text-md text-gray-600">{variable.Name}</h4>
-                <span class="align-sub text-xs font-medium inline-block py-1 px-2 rounded text-sky-500 bg-sky-200 lowercase last:mr-0 mr-1">
+                <span class="align-sub text-xs font-medium inline-block py-1 px-2 rounded group-hover:text-semibold group-hover:text-blue-500 bg-blue-100 lowercase last:mr-0 mr-1">
                   {variable.Type}
                 </span>
                 {variable.Required ?
@@ -89,10 +89,10 @@ export const variablesTab = (variables: Variable[]) => {
 
 export const outputsTab = (outputs: Output[]) => {
   return (
-    <div class="border border-sky-600 rounded-sm">
+    <div class="rounded-sm">
       {outputs.map(output => {
         return (
-            <dl class="ring-1 ring-sky-700 rounded-sm">
+            <dl class="rounded-sm">
               <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-md font-medium text-gray-500">Name</dt>
                 <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">{output.Name}</dd>
@@ -111,21 +111,21 @@ export const outputsTab = (outputs: Output[]) => {
 export default component$(() => {
   const moduleData = useEndpoint<Module>();
   const store = useStore({ tab: "variables" });
-  const active:string = "text-white px-4 py-5 sm:px-6 text-white bg-sky-600 ring-sky-600 rounded-sm";
-  const inactive:string = "px-4 py-5 sm:px-6 cursor-pointer border-t border-r border-l border-sky-600 rounded-sm text-sky-600";
+  const active:string = "text-white px-4 py-5 sm:px-6 text-white bg-blue-600 ring-blue-600 rounded-sm";
+  const inactive:string = "px-4 py-5 sm:px-6 cursor-pointer rounded-sm text-blue-600";
   return (
     <Resource
       value={moduleData}
       onPending={() => <div>Loading...</div>}
       onRejected={() => <div>Error</div>}
       onResolved={(module) => (
-        <div class="overflow-hidden bg-white sm:rounded-sm rounded-sm -mt-">
+        <div class="overflow-hidden bg-white rounded-sm -mt-">
           <div class="px-4 py-3 sm:px-6">
-            <h2 class="text-5xl font-light leading-6 text-sky-700 py-4">{module.Name}</h2>
+            <h2 class="text-5xl font-light leading-6 text-blue-700 py-4">{module.Name}</h2>
             <p class="mt-1 max-w-2xl text-md text-gray-500">{module.ID}</p>
             {module.Providers.map(prov => {
               return (
-                <span class="text-xs font-semibold inline-block py-1 px-2 rounded text-sky-500 bg-sky-200 lowercase last:mr-0 mr-1">
+                <span class="text-xs font-semibold inline-block py-1 px-2 rounded text-blue-500 bg-blue-200 lowercase last:mr-0 mr-1">
                   {`${prov.Source} ${prov.VersionConstraints}`}
                 </span>
               );

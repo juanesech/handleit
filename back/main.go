@@ -17,6 +17,7 @@ func setupRouter() *gin.Engine {
 	router.GET("/modules", module.List)
 	router.GET("/modules/:name", module.Get)
 	router.POST("/config", config.Set)
+	router.GET("/config/", config.List)
 	router.GET("/config/:name", config.Get)
 
 	return router
