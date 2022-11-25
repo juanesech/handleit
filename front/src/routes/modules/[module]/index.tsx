@@ -29,8 +29,8 @@ interface Output {
 
 export const onGet: RequestHandler<Module> = async ({ params }) => {
   try {
-    const response = await axios.get(`http://localhost:8080/modules/${params.module}`);
-    let data = await response.data;
+    const response = await axios.get(`http://back:8080/modules/${params.module}`);
+    const data = await response.data;
     return {
       Name: data.Name,
       ID: data.ID,

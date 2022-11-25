@@ -14,8 +14,8 @@ export interface ModuleSource {
 
 export const onGet: RequestHandler<ModuleSource> = async ({ params }) => {
     try {
-        const response = await axios.get(`http://localhost:8080/config/${params.source}`);
-        let data = await response.data;
+        const response = await axios.get(`http://back:8080/config/${params.source}`);
+        const data = await response.data;
         console.log(data)
         return {
             ID: data.ID,
@@ -62,7 +62,7 @@ export default component$(() => {
                             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt class="text-md font-medium text-gray-500">Type</dt>
                                 <input class={`bg-gray-50 mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0 ${store.editMode ? "" : "pointer-events-none"}`}
-                                    type="select"
+                                    type="text"
                                     value={source.type}
                                     >
                                 </input>

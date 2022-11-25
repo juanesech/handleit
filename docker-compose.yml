@@ -21,3 +21,10 @@ services:
       - RAVEN_ARGS=--log-to-console
     volumes:
       - ./ravendb:/opt/RavenDB/Server/RavenData
+  front:
+      build: front/
+      ports:
+        - "8080:8080"
+      links:
+        - back
+      restart: always

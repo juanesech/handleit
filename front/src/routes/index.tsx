@@ -13,7 +13,7 @@ export interface ModuleSummary {
 export const onGet: RequestHandler<ModuleSummary[]> = async () => {
   let modules: Array<ModuleSummary> = []
   try {
-    const response = await axios.get(`http://localhost:8080/modules`);
+    const response = await axios.get(`http://back:8080/modules`);
     modules = await response.data;
   } catch (error) {
     console.log(error);
