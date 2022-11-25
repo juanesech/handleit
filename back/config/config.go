@@ -6,8 +6,9 @@ import (
 	"reflect"
 
 	"github.com/gin-gonic/gin"
-	db "github.com/juanesech/handleit/database"
-	"github.com/juanesech/handleit/utils"
+	"github.com/juanesech/topo/constants"
+	db "github.com/juanesech/topo/database"
+	"github.com/juanesech/topo/utils"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -29,9 +30,9 @@ func Set(ctx *gin.Context) {
 	var sourcesFromDB []*ModuleSource
 	var source *ModuleSource
 
-	ctx.BindJSON(&sourceFromReq)
+	utils.CheckError(ctx.BindJSON(&sourceFromReq))
 
-	session, sessionErr := db.Client.OpenSession(db.Name)
+	session, sessionErr := db.Client.OpenSession(constants.DBName)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 
@@ -70,7 +71,7 @@ func Get(ctx *gin.Context) {
 func GetSource(sourceName string) ModuleSource {
 	var source *ModuleSource
 	var sourcesFromDB []*ModuleSource
-	session, sessionErr := db.Client.OpenSession(db.Name)
+	session, sessionErr := db.Client.OpenSession(constants.DBName)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 

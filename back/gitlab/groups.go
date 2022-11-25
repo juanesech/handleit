@@ -7,8 +7,8 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/juanesech/handleit/config"
-	"github.com/juanesech/handleit/utils"
+	"github.com/juanesech/topo/config"
+	"github.com/juanesech/topo/utils"
 	log "github.com/sirupsen/logrus"
 )
 

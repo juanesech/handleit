@@ -1,21 +1,21 @@
 package database
 
 import (
+	"github.com/juanesech/topo/constants"
 	"github.com/ravendb/ravendb-go-client"
 	log "github.com/sirupsen/logrus"
 )
 
-var DBAddress = "http://localhost:8083"
-
-const Name = "topo"
-
 func GetClient(databaseName string) *ravendb.DocumentStore {
-	serverNodes := []string{DBAddress}
+	serverNodes := []string{constants.DBAddress}
 	store := ravendb.NewDocumentStore(serverNodes, databaseName)
+    dc := ravendb.NewDocumentConventions()
+	dc.MaxNumberOfRequestsPerSession = 100
+	store.SetConventions(dc)
 	if err := store.Initialize(); err != nil {
-		log.Fatal(err)
+		log.Error(err)
 	}
 	return store
 }
 
-var Client = GetClient(Name)
+var Client = GetClient(constants.DBName)

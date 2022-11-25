@@ -8,10 +8,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/juanesech/handleit/config"
-	db "github.com/juanesech/handleit/database"
-	gl "github.com/juanesech/handleit/gitlab"
-	"github.com/juanesech/handleit/utils"
+	"github.com/juanesech/topo/config"
+	"github.com/juanesech/topo/constants"
+	db "github.com/juanesech/topo/database"
+	gl "github.com/juanesech/topo/gitlab"
+	"github.com/juanesech/topo/utils"
 )
 
 func Import(ctx *gin.Context) {
@@ -37,7 +38,7 @@ func Import(ctx *gin.Context) {
 		modsFromSource = getModulesFromFS(fmt.Sprintf("/tmp/%s", folder))
 	}
 
-	session, sessionErr := db.Client.OpenSession(db.Name)
+	session, sessionErr := db.Client.OpenSession(constants.DBName)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 
@@ -48,7 +49,7 @@ func Import(ctx *gin.Context) {
 		query := session.QueryCollectionForType(reflect.TypeOf(&Module{})).WhereEquals("Name", module.Name)
 
 		utils.CheckError(query.GetResults(&modulesFromDB))
-
+		log.Info("START SAVE TO DB: ", module.Name)
 		if len(modulesFromDB) != 0 {
 			module.ID = modulesFromDB[0].ID
 			session.Load(&loadedModule, module.ID)
