@@ -9,9 +9,9 @@ func ParseModule(path string) *Module {
 	module, _ := tfconfig.LoadModule(path)
 	parsedModule = &Module{
 		Name:      GetModuleName(path),
-		Variables: module.Variables,
-		Outputs:   module.Outputs,
-		Providers: module.RequiredProviders,
+		Variables: varToArray(module.Variables),
+		Outputs:   outToArray(module.Outputs),
+		Providers: providerToArray(module.RequiredProviders),
 	}
 	return parsedModule
 }

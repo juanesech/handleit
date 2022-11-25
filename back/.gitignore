@@ -51,3 +51,22 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,go
 __debug_bin
+
+# Dev DB
+ravendb
+
+# Fleet
+.fleet
+
+### yarn ###
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+.yarn/*
+.yarn-integrity
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# End of https://www.toptal.com/developers/gitignore/api/yarn

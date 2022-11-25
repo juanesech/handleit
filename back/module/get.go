@@ -6,16 +6,18 @@ import (
 	"reflect"
 
 	"github.com/gin-gonic/gin"
-	db "github.com/juanesech/handleit/database"
-	"github.com/juanesech/handleit/utils"
+	"github.com/juanesech/topo/constants"
+	db "github.com/juanesech/topo/database"
+	"github.com/juanesech/topo/utils"
 )
 
 func Get(ctx *gin.Context) {
 	var modulesFromDB []*Module
 	var loadedModule *Module
 	var module Module
+	ctx.Header("Access-Control-Allow-Origin", "*")
 
-	session, sessionErr := db.Client.OpenSession(db.Name)
+	session, sessionErr := db.Client.OpenSession(constants.DBName)
 	utils.CheckError(sessionErr)
 	defer session.Close()
 

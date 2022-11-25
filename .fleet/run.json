@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "docker-compose-up",
+            "name": "start",
+            "files": [],
+            "upOptions": "-d --build",
+        },
+        
+    ]
+}
