@@ -1,30 +1,31 @@
+version: '3.2'
 services:
-  back:
-    build: back/
+   back:
+     build: back/
+     ports:
+       - "8080:8080"
+     environment:
+       - DB_SHCEMA=mongodb
+       - DB_ADDRESS=mongo:27017
+       - DB_USER=topo
+       - DB_PASS=topod3v
+       - DB_NAME=topo
+     links:
+       - mongo
+  mongo:
+    image: mongo:6.0.3
     ports:
-      - "8080:8080"
+      - "27017:27017"
     environment:
-      - DB_ADDRESS=http://raven:8080
-      - DB_NAME=topo
-    links:
-      - raven
-    restart: always
-  raven:
-    image: ravendb/ravendb:ubuntu-latest-lts
-    ports:
-      - "8083:8080"
-      - "38888:38888"
-    environment:
-      - RAVEN_Setup_Mode=None
-      - RAVEN_License_Eula_Accepted=true
-      - RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork
-      - RAVEN_ARGS=--log-to-console
+      - MONGO_INITDB_ROOT_USERNAME=topo
+      - MONGO_INITDB_ROOT_PASSWORD=topod3v
     volumes:
-      - ./ravendb:/opt/RavenDB/Server/RavenData
-  front:
-      build: front/
-      ports:
-        - "5173:5173"
-      links:
-        - back
-      restart: always
+        - mongo:/data/db:rw
+   front:
+       build: front/
+       ports:
+         - "5173:5173"
+       links:
+         - back
+volumes:
+  mongo:

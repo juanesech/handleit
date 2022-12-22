@@ -13,8 +13,8 @@ func GetModuleName(path string) string {
 	return filepath.Base(path)
 }
 
-func getModulesFromFS(path string) []*Module {
-	var moduleList []*Module
+func getModulesFromFS(path string) []Module {
+	var moduleList []Module
 	files, err := os.ReadDir(path)
 	utils.CheckError(err)
 
@@ -27,7 +27,7 @@ func getModulesFromFS(path string) []*Module {
 }
 
 func varToArray(vars map[string]*tfconfig.Variable) []Variable {
-	array := []Variable{}
+	var array []Variable
 	var va = Variable{}
 	for k, v := range vars {
 		va.Name = k
@@ -42,7 +42,7 @@ func varToArray(vars map[string]*tfconfig.Variable) []Variable {
 }
 
 func outToArray(vars map[string]*tfconfig.Output) []Output {
-	array := []Output{}
+	var array []Output
 	var ou = Output{}
 	for k, v := range vars {
 		ou.Name = k
@@ -54,7 +54,7 @@ func outToArray(vars map[string]*tfconfig.Output) []Output {
 }
 
 func providerToArray(vars map[string]*tfconfig.ProviderRequirement) []Provider {
-	array := []Provider{}
+	var array []Provider
 	var p = Provider{}
 	for k, v := range vars {
 		p.Source = k

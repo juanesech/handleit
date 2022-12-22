@@ -1,21 +1,34 @@
 package database
 
 import (
-	"github.com/juanesech/topo/constants"
-	"github.com/ravendb/ravendb-go-client"
-	log "github.com/sirupsen/logrus"
+    "fmt"
+    "github.com/juanesech/topo/constants"
+    "github.com/juanesech/topo/utils"
+    "go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/mongo/options"
+    "go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-func GetClient(databaseName string) *ravendb.DocumentStore {
-	serverNodes := []string{constants.DBAddress}
-	store := ravendb.NewDocumentStore(serverNodes, databaseName)
-    dc := ravendb.NewDocumentConventions()
-	dc.MaxNumberOfRequestsPerSession = 100
-	store.SetConventions(dc)
-	if err := store.Initialize(); err != nil {
-		log.Error(err)
-	}
-	return store
+func GetMongoClient() *mongo.Client {
+    serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
+    clientOptions := options.Client().
+        ApplyURI(fmt.Sprintf("%s://%s:%s@%s/", constants.DBSchema, constants.DBUser, constants.DBPass, constants.DBAddress)).
+        SetServerAPIOptions(serverAPIOptions)
+
+    rp, err := readpref.New(readpref.PrimaryMode)
+    clientOptions.SetReadPreference(rp)
+
+    client, err := mongo.NewClient(clientOptions)
+    utils.CheckError(err)
+
+    return client
 }
 
-var Client = GetClient(constants.DBName)
+func GetCollection(name string) *mongo.Collection {
+    dbctx, dbclose := utils.GetCtx()
+    client := GetMongoClient()
+    defer dbclose()
+    utils.CheckError(client.Connect(dbctx))
+
+    return client.Database(constants.DBName).Collection(name)
+}
