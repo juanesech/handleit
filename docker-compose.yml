@@ -10,7 +10,7 @@ services:
       - raven
     restart: always
   raven:
-    image: ravendb/ravendb
+    image: ravendb/ravendb:ubuntu-latest-lts
     ports:
       - "8083:8080"
       - "38888:38888"
