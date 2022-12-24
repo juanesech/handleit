@@ -1,9 +1,9 @@
 FROM alpine
 
-COPY . /code
+# COPY . /code
 
 RUN apk add yarn nodejs --no-cache
 
 WORKDIR /code
-RUN yarn
+# RUN yarn
 ENTRYPOINT [ "yarn", "dev" ]

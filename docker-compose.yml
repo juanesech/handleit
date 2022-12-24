@@ -1,18 +1,23 @@
 version: '3.2'
 services:
-   back:
-     build: back/
-     ports:
-       - "8080:8080"
-     environment:
-       - DB_SHCEMA=mongodb
-       - DB_ADDRESS=mongo:27017
-       - DB_USER=topo
-       - DB_PASS=topod3v
-       - DB_NAME=topo
-     links:
-       - mongo
+  back:
+    # user: "${UID}"
+    build: back/
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_SHCEMA=mongodb
+      - DB_ADDRESS=mongo:27017
+      - DB_USER=topo
+      - DB_PASS=topod3v
+      - DB_NAME=topo
+    links:
+      - mongo
+    restart: always
+    volumes:
+      - /home/juanesech/Projects/local_modules:/tmp/local_modules:z
   mongo:
+    # user: "${UID}"
     image: mongo:6.0.3
     ports:
       - "27017:27017"
@@ -20,12 +25,14 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=topo
       - MONGO_INITDB_ROOT_PASSWORD=topod3v
     volumes:
-        - mongo:/data/db:rw
-   front:
-       build: front/
-       ports:
-         - "5173:5173"
-       links:
-         - back
-volumes:
-  mongo:
+      - ./mongo:/data/db:z
+  front:
+    # user: "${UID}"
+    build: front/
+    ports:
+      - "5173:5173"
+    links:
+      - back
+    restart: always
+    volumes:
+      - ./front:/code:Z

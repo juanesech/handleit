@@ -1,15 +1,29 @@
 import { component$, Slot } from '@builder.io/qwik';
-import Header from '../components/header/header';
+import Header from '../components/menu/menu';
 
 export default component$(() => {
+  const items = [
+    {
+      Label: "Modules",
+      Link: "/"
+    },
+    {
+      Label: "Settings",
+      Link: "/settings"
+    }
+  ]
   return (
     <>
       <main>
-        <Header />
-        <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-          <div class="block content-center mx-auto max-w-xl">
+        <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter mt-5">
+            <Header items={items}/>
+          </div>
+          <div class="column mt-5">
             <Slot/>
           </div>
+        </div>
         </div>
       </main>
     </>

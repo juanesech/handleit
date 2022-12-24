@@ -203,3 +203,6 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/go,yarn,node,visualstudiocode
 .fleet
+
+#Mongo bolume
+mongo
