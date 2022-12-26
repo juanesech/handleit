@@ -13,7 +13,7 @@ export default component$(( props: { items: MenuItem[] }) => {
         {props.items.map(item => {
           return (
           <li>
-            <a href={item.Link}>{item.Label}</a>
+            <a class="title is-5" href={item.Link}>{item.Label}</a>
           </li>
         )
         })}

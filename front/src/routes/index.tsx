@@ -32,12 +32,18 @@ export default component$(() => {
       onRejected={() => <div>Error</div>}
       onResolved={(moduleList) => (
         <div class="block">
+          <p class="control has-icons-left">
+            <input class="input is-link" type="text" placeholder="Search" />
+            <span class="icon is-left">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </span>
+          </p>
           {moduleList.map(module => {
             return (
-              <div class="block container">
+              <div class="block container m-2">
                 <a href={`/modules/${module.Name}`} class="box">
                   <div>
-                    <div class="title is-5">{module.Name}</div>
+                    <div class="title is-4">{module.Name}</div>
                     {module.Providers.map(prov => {
                       return (
                         <div class="field is-inline m-1 tags">

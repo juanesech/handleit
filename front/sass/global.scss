@@ -1,11 +1,11 @@
 @charset "utf-8";
 
 // Import a Google Font
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+@import url('https://fonts.googleapis.com/css?family=Manrope:400,700');
 
 // Set your brand colors
-$page-background: #1c2547;
-$module-bg: #110722;
+$page-background: #1f2635;
+$module-bg: #1f2635;
 
 // Update Bulma's global variables
 $family-sans-serif: "Nunito", sans-serif;
@@ -15,6 +15,46 @@ $body-background-color: $page-background;
 $primary: #00C4E9;
 $box-link-hover-shadow: 0 0.5em 1em -0.125em rgba(#00C4E9, 0.1), 0 0 0 1px #fff;
 $tabs-toggle-link-active-background-color: $module-bg;
+$panel-tabs-font-size: 1.25em;
+details > summary {
+  cursor: pointer;
+  list-style: none;
+}
 
-// Import only what you need from Bulma
+$box-background-color: $module-bg;
+$box-color: #00d7e8;
+
+// Import Bulma
 @import "../node_modules/bulma/bulma.sass";
+
+.tag:not(body).is-info {
+  background-image: linear-gradient(to right bottom, #01a4ff, #00b7ff, #00c8f8, #00d7e8, #01e3d5);
+  color: $page-background;
+}
+
+.box:focus {
+  outline: none;
+}
+
+.box {
+  border: none;
+  background-size: 300% 100%;
+
+  -moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+
+  * {
+    color: #00c8f8;
+  }
+}
+
+.box:hover {
+  background-position: 100% 0;
+  color: #00d7e8;
+  -moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}

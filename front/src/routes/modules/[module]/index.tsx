@@ -45,10 +45,10 @@ export const onGet: RequestHandler<Module> = async ({ params }) => {
 
 export const variablesTab = (variables: Variable[]) => {
   return (
-    <div class="tab-pane container box">
+    <div class="tab-pane box">
       {variables.map(variable => {
         return (
-          <details class="card m-1">
+          <details class="card m-1" >
             <summary class="">
               <div class="m-1">
                 <h4 class="title is-5">{variable.Name}</h4>
@@ -62,24 +62,24 @@ export const variablesTab = (variables: Variable[]) => {
                   : <></>}
               </div>
             </summary>
-            <dl class="card-content">
-              <div class=" bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-xs font-medium text-gray-500">Description</dt>
-                <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Description}</dd>
-              </div>
-              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-xs font-medium text-gray-500">Type</dt>
-                <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Type}</dd>
-              </div>
-              <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-xs font-medium text-gray-500">Required</dt>
-                <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{String(variable.Required)}</dd>
-              </div>
-              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-xs font-medium text-gray-500">Default value</dt>
-                <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Default}</dd>
-              </div>
-            </dl>
+            <table class="table is-striped is-hoverable is-fullwidth">
+              <tbody>
+                <tr>
+                  <td class="is-small">Description</td>
+                  <td class="">{variable.Description}</td>
+                </tr>
+                <tr>
+                  <td class="text-xs font-medium text-gray-500">Type</td>
+                  <td class="">{variable.Type}</td>
+                </tr>
+                <tr>
+                  <td class="text-xs font-medium text-gray-500">Required</td>
+                  <td class="">{String(variable.Required)}</td></tr>
+                <tr>
+                  <td class="text-xs font-medium text-gray-500">Default value</td>
+                  <td class="">{variable.Default}</td></tr>
+              </tbody>
+            </table>
           </details>
         );
       })}
@@ -132,30 +132,33 @@ export default component$(() => {
               })}
             </div>
           </div>
-          <div class="mt-3 m-5">
-            <div class="tabs is-boxed is-centered main-menu is-medium">
-              <ul>
-                <li class={store.tab === "variables" ? active : inactive}>
-                  <a>
-                  <span onClick$={() => store.tab = "variables"}>
-                    Variables
-                  </span>
-                  </a>
-                </li>
-                <li class={store.tab === "outputs" ? active : inactive}>
-                  <a>
-                  <span onClick$={() => store.tab = "outputs"}>
-                    Outputs
-                  </span>
-                  </a>
-                </li>
-              </ul>
+          <article class="panel mt-3 m-5">
+            <p class="panel-heading">Heading</p>
+            <p class="panel-tabs is-large">
+              <a class="">
+                <span onClick$={() => store.tab = "variables"}>
+                  Variables
+                </span>
+              </a>
+              <a>
+                <span onClick$={() => store.tab = "outputs"}>
+                  Outputs
+                </span>
+              </a>
+            </p>
+            <div class="panel-block">
+              <p class="control has-icons-left">
+                <input class="input is-link" type="text" placeholder="Search" />
+                <span class="icon is-left">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+              </p>
             </div>
             <div class="tab-content">
               {store.tab === "variables" ? variablesTab(module.Variables) : <></>}
               {store.tab === "outputs" ? outputsTab(module.Outputs) : <></>}
             </div>
-          </div>
+          </article>
         </div>
       )}
     />
