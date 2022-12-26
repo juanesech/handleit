@@ -45,42 +45,44 @@ export const onGet: RequestHandler<Module> = async ({ params }) => {
 
 export const variablesTab = (variables: Variable[]) => {
   return (
-    <div class="tab-pane container box">
+    <div>
       {variables.map(variable => {
         return (
-          <details class="card m-1">
-            <summary class="">
-              <div class="m-1">
-                <h4 class="title is-5">{variable.Name}</h4>
-                <span class="tag">
-                  {variable.Type}
-                </span>
-                {variable.Required ?
-                  <span class="tag is-danger">
-                    required
+          <div>
+            <details class="box mb-2 is-list is-block">
+              <summary class="is-clickable">
+                <div class="m-1">
+                  <h4 class="title is-5">{variable.Name}</h4>
+                  <span class="tag mx-2">
+                    {variable.Type}
                   </span>
-                  : <></>}
-              </div>
-            </summary>
-            <dl class="card-content">
-              <div class=" bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-xs font-medium text-gray-500">Description</dt>
-                <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Description}</dd>
-              </div>
-              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-xs font-medium text-gray-500">Type</dt>
-                <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Type}</dd>
-              </div>
-              <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-xs font-medium text-gray-500">Required</dt>
-                <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{String(variable.Required)}</dd>
-              </div>
-              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-xs font-medium text-gray-500">Default value</dt>
-                <dd class="mt-1 text-xs text-gray-900 sm:col-span-2 sm:mt-0">{variable.Default}</dd>
-              </div>
-            </dl>
-          </details>
+                  {variable.Required ?
+                    <span class="tag is-danger">
+                      required
+                    </span>
+                    : <></>}
+                </div>
+              </summary>
+              <table class="table is-striped is-hoverable is-relative">
+                <tbody>
+                  <tr>
+                    <td class="is-small">Description</td>
+                    <td class="">{variable.Description}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-xs font-medium text-gray-500">Type</td>
+                    <td class=""><code>{variable.Type}</code></td>
+                  </tr>
+                  <tr>
+                    <td class="text-xs font-medium text-gray-500">Required</td>
+                    <td class="">{String(variable.Required)}</td></tr>
+                  <tr>
+                    <td class="text-xs font-medium text-gray-500">Default value</td>
+                    <td class=""><code>{variable.Default}</code></td></tr>
+                </tbody>
+              </table>
+            </details>
+          </div>
         );
       })}
     </div>
@@ -89,14 +91,12 @@ export const variablesTab = (variables: Variable[]) => {
 
 export const outputsTab = (outputs: Output[]) => {
   return (
-    <div class="tab-pane box">
+    <div class="is-block">
       {outputs.map(output => {
         return (
           <dl class="box">
-            <div class="">
-              <dt class="title is-5">{output.Name}</dt>
-              <dd class="">{output.Description}</dd>
-            </div>
+            <dt class="title is-5">{output.Name}</dt>
+            <dd class="">{output.Description}</dd>
           </dl>
         );
       })}
@@ -115,16 +115,16 @@ export default component$(() => {
       onPending={() => <div>Loading...</div>}
       onRejected={() => <div>Error</div>}
       onResolved={(module) => (
-        <div class="container is-max-desktop">
-          <div class="box container block">
+        <div class=" is-max-desktop">
+          <div class="container block is-dark">
             <h2 class="title is-2">{module.Name}</h2>
             <p class="title is-6">ID: {module.ID}</p>
             <div class="tags has-addons">
               {module.Providers.map(prov => {
                 return (
                   <div class="m-1">
-                    <span class="tag">{prov.Source}</span>
-                    <span class="tag is-primary">
+                    <span class="tag is-info">{prov.Source}</span>
+                    <span class="tag">
                       {prov.VersionConstraints}
                     </span>
                   </div>
@@ -132,30 +132,30 @@ export default component$(() => {
               })}
             </div>
           </div>
-          <div class="mt-3 m-5">
-            <div class="tabs is-boxed is-centered main-menu is-medium">
-              <ul>
-                <li class={store.tab === "variables" ? active : inactive}>
-                  <a>
-                  <span onClick$={() => store.tab = "variables"}>
-                    Variables
-                  </span>
-                  </a>
-                </li>
-                <li class={store.tab === "outputs" ? active : inactive}>
-                  <a>
-                  <span onClick$={() => store.tab = "outputs"}>
-                    Outputs
-                  </span>
-                  </a>
-                </li>
-              </ul>
+          <article class="panel mt-3 m-5">
+            <div>
+              <button class="button m-2 is-active"
+                onClick$={() => store.tab = "variables"}>
+                Variables
+              </button>
+              <button class="button m-2"
+                onClick$={() => store.tab = "outputs"}>
+                Outputs
+              </button>
             </div>
-            <div class="tab-content">
+            <div class="box">
+              <div class="is-block mb-5">
+                <p class="control has-icons-left">
+                  <input class="input is-link" type="text" placeholder="Search" />
+                  <span class="icon is-left">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                  </span>
+                </p>
+              </div>
               {store.tab === "variables" ? variablesTab(module.Variables) : <></>}
               {store.tab === "outputs" ? outputsTab(module.Outputs) : <></>}
             </div>
-          </div>
+          </article>
         </div>
       )}
     />

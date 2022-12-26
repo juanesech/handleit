@@ -7,13 +7,13 @@ export  interface MenuItem {
 
 export default component$(( props: { items: MenuItem[] }) => {
   return (
-    <div class="box">
+    <div class="box is-shadowless">
     <aside class="menu">
       <ul class="menu-list">
         {props.items.map(item => {
           return (
           <li>
-            <a href={item.Link}>{item.Label}</a>
+            <a class="title is-5" href={item.Link}>{item.Label}</a>
           </li>
         )
         })}

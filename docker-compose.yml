@@ -1,7 +1,6 @@
 version: '3.2'
 services:
   back:
-    # user: "${UID}"
     build: back/
     ports:
       - "8080:8080"
@@ -17,7 +16,6 @@ services:
     volumes:
       - /home/juanesech/Projects/local_modules:/tmp/local_modules:z
   mongo:
-    # user: "${UID}"
     image: mongo:6.0.3
     ports:
       - "27017:27017"
@@ -27,7 +25,6 @@ services:
     volumes:
       - ./mongo:/data/db:z
   front:
-    # user: "${UID}"
     build: front/
     ports:
       - "5173:5173"

@@ -1,20 +1,66 @@
 @charset "utf-8";
 
 // Import a Google Font
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+@import url('https://fonts.googleapis.com/css?family=Inter:400,700');
 
 // Set your brand colors
-$page-background: #1c2547;
-$module-bg: #110722;
+// $page-background: #1C1D1F;
+// $module-bg: #1C1D1F;
 
-// Update Bulma's global variables
-$family-sans-serif: "Nunito", sans-serif;
+// // Update Bulma's global variables
 
-// Update some of Bulma's component variables
-$body-background-color: $page-background;
-$primary: #00C4E9;
-$box-link-hover-shadow: 0 0.5em 1em -0.125em rgba(#00C4E9, 0.1), 0 0 0 1px #fff;
-$tabs-toggle-link-active-background-color: $module-bg;
+// // Update some of Bulma's component variables
 
-// Import only what you need from Bulma
+// $box-link-hover-shadow: 0 0.5em 1em -0.125em rgba(#00C4E9, 0.1), 0 0 0 1px #fff;
+// $tabs-toggle-link-active-background-color: $module-bg;
+// $panel-tabs-font-size: 1.25em;
+// details > summary {
+//   cursor: pointer;
+//   list-style: none;
+// }
+
+$body-background-color: #111111;
+$box-background-color: #000000;
+$title-color: #959CA4;
+$family-sans-serif: "Inter", sans-serif;
+
+$primary: #ffffff;
+$link: #FAFBFE;
+$info: #959CA4;
+$success: #189e5f;
+$warning: #f0a33f;
+$danger: #c94949;
+$dark: #000000;
+$text: #000000;
+
+$link-focus-border: $info;
+
+//box
+$box-radius: 0.2rem;
+// Import Bulma
 @import "../node_modules/bulma/bulma.sass";
+
+.input {
+  background-color: $box-background-color;
+  outline: 2px ridge #5E6065;
+}
+
+.box {
+  outline: 2px ridge #5E6065;
+  border-radius: 0.2rem;
+}
+
+.box.is-list:hover {
+  outline: 2rem #fff;
+  -moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
+.tag:not(body).is-info {
+  background-color: #959CA4;
+  color: $box-background-color;
+}
+
+

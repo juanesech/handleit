@@ -39,3 +39,4 @@ lerna-debug.log*
 
 #SASS
 .sass-cache
+.vercel

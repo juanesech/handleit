@@ -32,16 +32,19 @@ export default component$(() => {
       onRejected={() => <div>Error</div>}
       onResolved={(moduleList) => (
         <div class="block">
+          <div class="mb-2">
+              <input class="input" type="text" placeholder="Search" />
+          </div>
           {moduleList.map(module => {
             return (
-              <div class="block container">
-                <a href={`/modules/${module.Name}`} class="box">
+              <div class="block container m-2 is-shadowless">
+                <a href={`/modules/${module.Name}`} class="box is-list mt-4 is-outlined">
                   <div>
-                    <div class="title is-5">{module.Name}</div>
+                    <div class="title is-size-4 has-text-weight-light">{module.Name}</div>
                     {module.Providers.map(prov => {
                       return (
                         <div class="field is-inline m-1 tags">
-                          <span class="tag is-info">
+                          <span class="tag is-info is-dark">
                             {prov.Source}
                           </span>
                         </div>
