@@ -45,7 +45,7 @@ export const onGet: RequestHandler<Module> = async ({ params }) => {
 
 export const variablesTab = (variables: Variable[]) => {
   return (
-    <div class="tab-pane">
+    <div class="tab-pane container box">
       {variables.map(variable => {
         return (
           <details class="card m-1">
@@ -89,17 +89,13 @@ export const variablesTab = (variables: Variable[]) => {
 
 export const outputsTab = (outputs: Output[]) => {
   return (
-    <div class="tab-pane">
+    <div class="tab-pane box">
       {outputs.map(output => {
         return (
-          <dl class="rounded-sm">
-            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-md font-medium text-gray-500">Name</dt>
-              <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">{output.Name}</dd>
-            </div>
-            <div class=" px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-md font-medium text-gray-500">Description</dt>
-              <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">{output.Description}</dd>
+          <dl class="box">
+            <div class="">
+              <dt class="title is-5">{output.Name}</dt>
+              <dd class="">{output.Description}</dd>
             </div>
           </dl>
         );
@@ -119,8 +115,8 @@ export default component$(() => {
       onPending={() => <div>Loading...</div>}
       onRejected={() => <div>Error</div>}
       onResolved={(module) => (
-        <div class="box">
-          <div class="">
+        <div class="container is-max-desktop">
+          <div class="box container block">
             <h2 class="title is-2">{module.Name}</h2>
             <p class="title is-6">ID: {module.ID}</p>
             <div class="tags has-addons">
@@ -137,7 +133,7 @@ export default component$(() => {
             </div>
           </div>
           <div class="mt-3 m-5">
-            <div class="tabs is-toggle is-centered main-menu is-medium">
+            <div class="tabs is-boxed is-centered main-menu is-medium">
               <ul>
                 <li class={store.tab === "variables" ? active : inactive}>
                   <a>

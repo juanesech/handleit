@@ -10,7 +10,8 @@
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.types": "tsc --incremental --noEmit",
-    "dev": "vite --mode ssr --host",
+    "build.sass": "sass --no-source-map sass/global.scss:src/global.css",
+    "dev": "yarn build.sass && vite --mode ssr --host",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
@@ -41,6 +42,7 @@
     "axios": "^0.27.2",
     "bulma": "^0.9.4",
     "daisyui": "^2.31.0",
-    "node-sass": "^8.0.0"
+    "node-sass": "^8.0.0",
+    "sass": "^1.57.1"
   }
 }
