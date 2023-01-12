@@ -11,8 +11,8 @@ import (
 	db "github.com/juanesech/topo/database"
 	gl "github.com/juanesech/topo/gitlab"
 	"github.com/juanesech/topo/utils"
-	 "go.mongodb.org/mongo-driver/bson"
-	 "go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func Import(ctx *gin.Context) {
@@ -31,7 +31,7 @@ func Import(ctx *gin.Context) {
 		modsFromSource = getModulesFromFS(source.Address)
 
 	case "GitLab":
-		mp := gl.GetProjects(source, gl.GetGroup(source).Id)
+		mp := gl.GetProjects(source, gl.GetGroup(source).ID)
 		folder := uuid.NewString()
 
 		for _, p := range mp {
@@ -42,11 +42,11 @@ func Import(ctx *gin.Context) {
 
 	coll := db.GetCollection("modules")
 
-  for _, m := range modsFromSource {
-    log.Info("IMPORTING: ", m.Name)
-    opts := options.Update().SetUpsert(true)
-    filter := bson.D{{"name", m.Name}}
-    _ , upderr := coll.UpdateOne(dbctx, filter, bson.D{{"$set",m}}, opts)
-    utils.CheckError(upderr)
-  }
+	for _, m := range modsFromSource {
+		log.Info("IMPORTING: ", m.Name)
+		opts := options.Update().SetUpsert(true)
+		filter := bson.D{{"name", m.Name}}
+		_, upderr := coll.UpdateOne(dbctx, filter, bson.D{{"$set", m}}, opts)
+		utils.CheckError(upderr)
+	}
 }

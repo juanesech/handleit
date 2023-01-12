@@ -10,6 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Gitlab client struct
 type Gitlab struct {
 	Url    string
 	Token  string
@@ -57,6 +58,7 @@ func (provider *Gitlab) request(req *http.Request) (response *http.Response, err
 	return response, err
 }
 
+// Send a Get request to Gitlab instance
 func (provider *Gitlab) Get(path string) (response *http.Response) {
 	req, err := http.NewRequest(http.MethodGet, provider.Url+path, nil)
 	if err != nil {
@@ -71,6 +73,7 @@ func (provider *Gitlab) Get(path string) (response *http.Response) {
 	return rsp
 }
 
+// Send a Post request to Gitlab instance
 func (provider *Gitlab) Post(path string, reqBody []byte) (response *http.Response) {
 	req, err := http.NewRequest(http.MethodPost, provider.Url+path, bytes.NewBuffer(reqBody))
 	if err != nil {
@@ -85,6 +88,7 @@ func (provider *Gitlab) Post(path string, reqBody []byte) (response *http.Respon
 	return rsp
 }
 
+// Send a Put request to Gitlab instance
 func (provider *Gitlab) Put(path string, reqBody []byte) (response *http.Response) {
 	req, err := http.NewRequest(http.MethodPut, provider.Url+path, bytes.NewBuffer(reqBody))
 	if err != nil {
