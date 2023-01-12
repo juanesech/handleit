@@ -1,33 +1,27 @@
 package module
 
 import (
-	"net/http"
-	"reflect"
+  "net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/juanesech/topo/constants"
+    "go.mongodb.org/mongo-driver/bson"
 	db "github.com/juanesech/topo/database"
 	"github.com/juanesech/topo/utils"
 )
 
 func List(ctx *gin.Context) {
-	var moduleList []ModuleResume
-	var modulesFromDB []*Module
 
-	session, sessionErr := db.Client.OpenSession(constants.DBName)
-	utils.CheckError(sessionErr)
-	defer session.Close()
+    dbctx, dbclose := utils.GetCtx()
+    defer dbclose()
 
-	query := session.QueryCollectionForType(reflect.TypeOf(&Module{}))
-	utils.CheckError(query.GetResults(&modulesFromDB))
+    coll := db.GetCollection("modules")
+    filter := bson.D{}
+    var modulesFromDB []Module
+    cursor , finderr := coll.Find(dbctx, filter)
+    utils.CheckError(finderr)
+    utils.CheckError(cursor.All(dbctx, &modulesFromDB))
 
-	for _, module := range modulesFromDB {
-		moduleResume := &ModuleResume{
-			Name:      module.Name,
-			Providers: module.Providers,
-		}
-		moduleList = append(moduleList, *moduleResume)
-	}
-	ctx.Header("Access-Control-Allow-Origin", "*")
-	ctx.JSON(http.StatusOK, moduleList)
+    ctx.Header("Access-Control-Allow-Origin", "*")
+    //TODO: HTTP Response on error
+    ctx.JSON(http.StatusOK, modulesFromDB)
 }

@@ -8,7 +8,6 @@ import (
 	"github.com/juanesech/topo/module"
 )
 
-var ListenAddr = "localhost:8080"
 
 func setupRouter() *gin.Engine {
 	router := gin.Default()

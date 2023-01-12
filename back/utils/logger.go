@@ -1,7 +1,8 @@
 package utils
 
 import (
-    "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
-var Logger = logrus.New() 
+// Logrus implementation
+var Logger = logrus.New()

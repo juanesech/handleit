@@ -70,3 +70,7 @@ ravendb
 !.yarn/versions
 
 # End of https://www.toptal.com/developers/gitignore/api/yarn
+
+ravendb
+
+.vscode

@@ -8,6 +8,7 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 )
 
+// Clone a git repository to a specific folder
 func Clone(folder, token, url string) {
 	path := fmt.Sprintf("/tmp/%s", folder)
 	CheckError(os.MkdirAll(path, os.ModePerm))

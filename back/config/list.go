@@ -2,25 +2,26 @@ package config
 
 import (
 	"net/http"
-	"reflect"
 
 	"github.com/gin-gonic/gin"
-	"github.com/juanesech/topo/constants"
+    "go.mongodb.org/mongo-driver/bson"
 	db "github.com/juanesech/topo/database"
 	"github.com/juanesech/topo/utils"
 )
 
 func List(ctx *gin.Context) {
-//	var sourceList []ModuleSource
-	var sourcesFromDB []*ModuleSource
 
-	session, sessionErr := db.Client.OpenSession(constants.DBName)
-	utils.CheckError(sessionErr)
-	defer session.Close()
+    dbctx, dbclose := utils.GetCtx()
+    defer dbclose()
 
-	query := session.QueryCollectionForType(reflect.TypeOf(&ModuleSource{}))
-	utils.CheckError(query.GetResults(&sourcesFromDB))
+    coll := db.GetCollection("sources")
+    filter := bson.D{}
+    var sourcesFromDB []ModuleSource
+    cursor , finderr := coll.Find(dbctx, filter)
+    utils.CheckError(finderr)
+    utils.CheckError(cursor.All(dbctx, &sourcesFromDB))
 
 	ctx.Header("Access-Control-Allow-Origin", "*")
+//TODO: HTTP Response on error
 	ctx.JSON(http.StatusOK, sourcesFromDB)
 }

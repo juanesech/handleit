@@ -12,9 +12,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Gitlab Group
 type Group struct {
 	Name string `json:"name"`
-	Id   int    `json:"id"`
+	ID   int    `json:"id"`
 	Path string `json:"full_path"`
 }
 
