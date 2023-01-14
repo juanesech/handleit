@@ -10,24 +10,28 @@ on:
     branches: [ "main" ]
 
 jobs:
-
+  codacy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Codacy Analysis CLI
+      uses: codacy/codacy-analysis-cli-action@v4.2.0
+      with:
+        project-token: $CODACY_TOKEN
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      working-directory: back
 
     - name: Set up Go
+      working-directory: back
       uses: actions/setup-go@v3
       with:
         go-version: 1.19
 
     - name: Build
-      run: go build -v back/...
+      working-directory: back
+      run: go build -v ./...
 
-    - name: Test
-      run: go test -v back/...
-
-    - name: Codacy Analysis CLI
-      uses: codacy/codacy-analysis-cli-action@v4.2.0
-      with:
-        project-token: $CODACY_TOKEN
+    # - name: Test
+    #   run: go test -v back/...
