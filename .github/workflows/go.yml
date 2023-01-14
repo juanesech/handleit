@@ -21,7 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      working-directory: back
 
     - name: Set up Go
       uses: actions/setup-go@v3
