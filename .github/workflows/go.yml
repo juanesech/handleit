@@ -24,7 +24,6 @@ jobs:
       working-directory: back
 
     - name: Set up Go
-      working-directory: back
       uses: actions/setup-go@v3
       with:
         go-version: 1.19
