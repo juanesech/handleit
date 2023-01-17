@@ -1,13 +1,10 @@
 package gitlab
 
 import (
-	"encoding/json"
 	"fmt"
-	"net/http"
-	"time"
-
 	"github.com/juanesech/topo/config"
 	"github.com/juanesech/topo/utils"
+	log "github.com/sirupsen/logrus"
 )
 
 type Project struct {
@@ -21,16 +18,12 @@ func GetProjects(source config.ModuleSource, group int) []Project {
 	gitlab := &Gitlab{
 		Url:   source.Address,
 		Token: source.Auth,
-		Client: &http.Client{
-			Timeout: time.Duration(30 * time.Second),
-		},
 	}
 
-	resp := gitlab.Get(path)
-	defer resp.Body.Close()
-
 	projects := &[]Project{}
-	utils.CheckError(json.NewDecoder(resp.Body).Decode(projects))
+	resp, err := gitlab.Get(path, projects)
+	utils.CheckError(err)
+	log.Debug(resp)
 
 	return *projects
 }

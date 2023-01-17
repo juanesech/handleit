@@ -1,104 +1,59 @@
 package gitlab
 
 import (
-	"bytes"
-	"fmt"
-	"io/ioutil"
-	"net/http"
-
-	"github.com/juanesech/topo/utils"
+	"github.com/go-resty/resty/v2"
 	log "github.com/sirupsen/logrus"
 )
 
-// Gitlab client struct
-type Gitlab struct {
-	Url    string
-	Token  string
-	Client *http.Client
+var (
+	Client *resty.Client
+)
+
+func init() {
+	Client = resty.New()
 }
 
-func (provider *Gitlab) request(req *http.Request) (response *http.Response, err error) {
-	clonedReq := req.Clone(req.Context())
-	if req.Body != nil {
-		clonedReq.Body, err = req.GetBody()
-		if err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-	}
+// Gitlab client struct
+type Gitlab struct {
+	Url   string
+	Token string
+}
 
-	defer func() {
-		if clonedReq.Body != nil {
-			clonedReq.Body.Close()
-		}
-	}()
-
-	// set headers common to all requests
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", provider.Token))
-	response, err = provider.Client.Do(req)
+// Get request to Gitlab instance
+func (provider *Gitlab) Get(path string, resp ...interface{}) (response *resty.Response, err error) {
+	rsp, err := Client.R().
+		SetHeader("PRIVATE-TOKEN", provider.Token).
+		Get(provider.Url + path)
 	if err != nil {
-		log.Fatal("request: ", err)
+		return nil, err
+	}
+	return rsp, nil
+}
+
+// Post request to Gitlab instance
+func (provider *Gitlab) Post(path string, reqBody interface{}) (response *resty.Response, err error) {
+	rsp, err := Client.R().
+		SetHeader("PRIVATE-TOKEN", provider.Token).
+		SetBody(reqBody).
+		Post(provider.Url + path)
+	if err != nil {
+		log.Fatal("API: ", err)
 		return nil, err
 	}
 
-	if response.StatusCode == http.StatusUnauthorized {
-		bodyBytes, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			log.Fatal(err)
-		} else {
-			log.Debug(string(bodyBytes))
-		}
-		// ask for a new refresh token
-		response.Body.Close()
-		response, err = provider.request(clonedReq)
-		utils.CheckError(err)
-	}
-
-	return response, err
+	return rsp, nil
 }
 
-// Send a Get request to Gitlab instance
-func (provider *Gitlab) Get(path string) (response *http.Response) {
-	req, err := http.NewRequest(http.MethodGet, provider.Url+path, nil)
-	if err != nil {
-		return
-	}
-	rsp, err := provider.request(req)
-	if err != nil {
-		log.Fatal("API: ", err)
-		return
-	}
-
-	return rsp
-}
-
-// Send a Post request to Gitlab instance
-func (provider *Gitlab) Post(path string, reqBody []byte) (response *http.Response) {
-	req, err := http.NewRequest(http.MethodPost, provider.Url+path, bytes.NewBuffer(reqBody))
-	if err != nil {
-		return
-	}
-	rsp, err := provider.request(req)
+// Put request to Gitlab instance
+func (provider *Gitlab) Put(path string, reqBody interface{}) (response *resty.Response, err error) {
+	rsp, err := Client.R().
+		SetHeader("PRIVATE-TOKEN", provider.Token).
+		SetBody(reqBody).
+		Put(provider.Url + path)
 	if err != nil {
 		log.Fatal("API: ", err)
-		return
+		return nil, err
 	}
 
-	return rsp
-}
-
-// Send a Put request to Gitlab instance
-func (provider *Gitlab) Put(path string, reqBody []byte) (response *http.Response) {
-	req, err := http.NewRequest(http.MethodPut, provider.Url+path, bytes.NewBuffer(reqBody))
-	if err != nil {
-		return
-	}
-	rsp, err := provider.request(req)
-	if err != nil {
-		log.Fatal("API: ", err)
-		return
-	}
-
-	return rsp
+	return rsp, nil
 }

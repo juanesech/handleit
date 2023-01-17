@@ -1,11 +1,8 @@
 package gitlab
 
 import (
-	"encoding/json"
 	"fmt"
-	"net/http"
 	"reflect"
-	"time"
 
 	"github.com/juanesech/topo/config"
 	"github.com/juanesech/topo/utils"
@@ -30,14 +27,11 @@ func GetGroup(source config.ModuleSource) Group {
 	gitlab := &Gitlab{
 		Url:   source.Address,
 		Token: source.Auth,
-		Client: &http.Client{
-			Timeout: time.Duration(30 * time.Second),
-		},
 	}
-
-	resp := gitlab.Get(path)
 	respGroup := &[]Group{}
-	utils.CheckError(json.NewDecoder(resp.Body).Decode(respGroup))
+	resp, err := gitlab.Get(path, respGroup)
+	utils.CheckError(err)
+	log.Debug(resp)
 
 	var retGroup Group
 	for _, rg := range *respGroup {
