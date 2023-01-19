@@ -23,6 +23,7 @@ type Gitlab struct {
 func (provider *Gitlab) Get(path string, resp ...interface{}) (response *resty.Response, err error) {
 	rsp, err := Client.R().
 		SetHeader("PRIVATE-TOKEN", provider.Token).
+		SetResult(resp).
 		Get(provider.Url + path)
 	if err != nil {
 		return nil, err
@@ -37,7 +38,7 @@ func (provider *Gitlab) Post(path string, reqBody interface{}) (response *resty.
 		SetBody(reqBody).
 		Post(provider.Url + path)
 	if err != nil {
-		log.Fatal("API: ", err)
+		log.Error("API: ", err)
 		return nil, err
 	}
 

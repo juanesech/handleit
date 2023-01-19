@@ -30,8 +30,10 @@ func GetGroup(source config.ModuleSource) Group {
 	}
 	respGroup := &[]Group{}
 	resp, err := gitlab.Get(path, respGroup)
-	utils.CheckError(err)
-	log.Debug(resp)
+	if err != nil && len(*respGroup) == 0 {
+		log.Error(err)
+	}
+	log.Debug(resp, resp.StatusCode())
 
 	var retGroup Group
 	for _, rg := range *respGroup {
