@@ -13,6 +13,7 @@ import (
 	"net/http"
 )
 
+// Configuration structure
 type Config struct {
 	Sources []ModuleSource
 }
