@@ -33,4 +33,4 @@ jobs:
         project-token: ${{ secrets.CODACY_TOKEN }}
         # run-gosec: "true"
         run-staticcheck: "true"
-        directory: ./back
+        directory: $PWD/back
