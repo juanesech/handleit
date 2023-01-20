@@ -29,11 +29,14 @@ func GetGroup(source config.ModuleSource) Group {
 		Token: source.Auth,
 	}
 	respGroup := &[]Group{}
-	resp, err := gitlab.Get(path, respGroup)
+	res, err := gitlab.Get(path, respGroup)
+
+	log.Debug("Response struct: ", respGroup)
+
 	if err != nil && len(*respGroup) == 0 {
 		log.Error(err)
 	}
-	log.Debug(resp, resp.StatusCode())
+	log.Debug(res, res.StatusCode())
 
 	var retGroup Group
 	for _, rg := range *respGroup {
