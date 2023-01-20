@@ -1,7 +1,9 @@
 package gitlab
 
 import (
+	"encoding/json"
 	"fmt"
+
 	"github.com/juanesech/topo/config"
 	"github.com/juanesech/topo/utils"
 	log "github.com/sirupsen/logrus"
@@ -20,10 +22,11 @@ func GetProjects(source config.ModuleSource, group int) []Project {
 		Token: source.Auth,
 	}
 
-	projects := &[]Project{}
-	resp, err := gitlab.Get(path, projects)
+	projects := []Project{}
+	res, err := gitlab.Get(path)
 	utils.CheckError(err)
-	log.Debug(resp)
+	_ = json.Unmarshal(res.Body(), &projects)
+	log.Debug(res)
 
-	return *projects
+	return projects
 }

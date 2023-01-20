@@ -1,6 +1,7 @@
 package gitlab
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 
@@ -21,33 +22,22 @@ func (g Group) IsEmpty() bool {
 }
 
 func GetGroup(source config.ModuleSource) Group {
-	name := utils.GetLast(source.Group, "/")
-
-	path := fmt.Sprintf("/api/v4/groups?search=%v", name)
+	path := fmt.Sprintf("/api/v4/groups/%v", source.Group)
 	gitlab := &Gitlab{
 		Url:   source.Address,
 		Token: source.Auth,
 	}
-	respGroup := &[]Group{}
-	res, err := gitlab.Get(path, respGroup)
+	respGroup := Group{}
+	res, err := gitlab.Get(path)
+	utils.CheckError(err)
 
+	_ = json.Unmarshal(res.Body(), &respGroup)
 	log.Debug("Response struct: ", respGroup)
+	log.Debug("Response: ", res, res.StatusCode())
 
-	if err != nil && len(*respGroup) == 0 {
-		log.Error(err)
-	}
-	log.Debug(res, res.StatusCode())
-
-	var retGroup Group
-	for _, rg := range *respGroup {
-		if rg.Name == name && rg.Path == source.Group {
-			retGroup = rg
-		}
+	if respGroup.IsEmpty() {
+		log.Errorf("Group with id %v is empty")
 	}
 
-	if retGroup.IsEmpty() {
-		log.Errorf("Group %s not found", name)
-	}
-
-	return retGroup
+	return respGroup
 }

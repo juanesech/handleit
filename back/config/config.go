@@ -1,16 +1,16 @@
 package config
 
 import (
-    "fmt"
-    "go.mongodb.org/mongo-driver/bson/primitive"
-    "go.mongodb.org/mongo-driver/mongo/options"
+	"fmt"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/gin-gonic/gin"
 	db "github.com/juanesech/topo/database"
 	"github.com/juanesech/topo/utils"
 	log "github.com/sirupsen/logrus"
-    "go.mongodb.org/mongo-driver/bson"
-    "net/http"
+	"go.mongodb.org/mongo-driver/bson"
+	"net/http"
 )
 
 type Config struct {
@@ -18,45 +18,44 @@ type Config struct {
 }
 
 type ModuleSource struct {
-    ID     string
+	ID      string
 	Name    string `json:"name"`
 	Type    string `json:"type"`
 	Address string `json:"address"`
-	Group   string `json:"group"`
+	Group   int    `json:"group"`
 	Auth    string `json:"auth"`
 }
 
 func (m ModuleSource) WithID() ModuleSource {
-    var sourcefromdb bson.M
+	var sourcefromdb bson.M
 
-    dbctx, dbclose := utils.GetCtx()
-    defer dbclose()
+	dbctx, dbclose := utils.GetCtx()
+	defer dbclose()
 
-    coll := db.GetCollection("sources")
-    filter := bson.D{{"name", m.Name}}
-    findsrc := coll.FindOne(dbctx, filter).Decode(&sourcefromdb)
-    utils.CheckError(findsrc)
-    m.ID = sourcefromdb["_id"].(primitive.ObjectID).Hex()
+	coll := db.GetCollection("sources")
+	filter := bson.D{{"name", m.Name}}
+	findsrc := coll.FindOne(dbctx, filter).Decode(&sourcefromdb)
+	utils.CheckError(findsrc)
+	m.ID = sourcefromdb["_id"].(primitive.ObjectID).Hex()
 
-    return m
+	return m
 }
-
 
 func Set(ctx *gin.Context) {
 	var sourceFromReq *ModuleSource
 
-    utils.CheckError(ctx.BindJSON(&sourceFromReq))
+	utils.CheckError(ctx.BindJSON(&sourceFromReq))
 
-    dbctx, dbclose := utils.GetCtx()
-    defer dbclose()
+	dbctx, dbclose := utils.GetCtx()
+	defer dbclose()
 
-    coll := db.GetCollection("sources")
-    opts := options.Update().SetUpsert(true)
-    filter := bson.D{{"name", sourceFromReq.Name}}
-    _ , upderr := coll.UpdateOne(dbctx, filter, bson.D{{"$set",sourceFromReq}}, opts)
-    utils.CheckError(upderr)
+	coll := db.GetCollection("sources")
+	opts := options.Update().SetUpsert(true)
+	filter := bson.D{{"name", sourceFromReq.Name}}
+	_, upderr := coll.UpdateOne(dbctx, filter, bson.D{{"$set", sourceFromReq}}, opts)
+	utils.CheckError(upderr)
 
-    ctx.JSON(http.StatusOK, sourceFromReq.WithID())
+	ctx.JSON(http.StatusOK, sourceFromReq.WithID())
 }
 
 func Get(ctx *gin.Context) {
@@ -71,14 +70,14 @@ func Get(ctx *gin.Context) {
 }
 
 func GetSource(sourceName string) ModuleSource {
-    var source *ModuleSource
-    dbctx, dbclose := utils.GetCtx()
-    defer dbclose()
+	var source *ModuleSource
+	dbctx, dbclose := utils.GetCtx()
+	defer dbclose()
 
-    coll := db.GetCollection("sources")
-    filter := bson.D{{"name", sourceName}}
-    findsrc := coll.FindOne(dbctx, filter).Decode(&source)
-    utils.CheckError(findsrc)
+	coll := db.GetCollection("sources")
+	filter := bson.D{{"name", sourceName}}
+	findsrc := coll.FindOne(dbctx, filter).Decode(&source)
+	utils.CheckError(findsrc)
 
-    return source.WithID()
+	return source.WithID()
 }
