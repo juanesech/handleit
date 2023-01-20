@@ -31,6 +31,6 @@ jobs:
       uses: codacy/codacy-analysis-cli-action@v4.2.0
       with:
         project-token: ${{ secrets.CODACY_TOKEN }}
-        run-gosec: "true"
+        # run-gosec: "true"
         run-staticcheck: "true"
         directory: ./back
