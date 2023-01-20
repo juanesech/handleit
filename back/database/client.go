@@ -16,6 +16,7 @@ func GetMongoClient() *mongo.Client {
 		SetServerAPIOptions(serverAPIOptions)
 
 	rp, err := readpref.New(readpref.PrimaryMode)
+	utils.CheckError(err)
 	clientOptions.SetReadPreference(rp)
 	clientOptions.SetDirect(true)
 
