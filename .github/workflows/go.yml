@@ -14,9 +14,9 @@ jobs:
     steps:
     - name: Codacy Analysis CLI
       uses: codacy/codacy-analysis-cli-action@v4.2.0
-      working-directory: back
       with:
         project-token: ${{ secrets.CODACY_TOKEN }}
+        directory: back
   build:
     runs-on: ubuntu-latest
     steps:
