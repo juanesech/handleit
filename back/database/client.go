@@ -2,7 +2,6 @@ package database
 
 import (
 	"fmt"
-
 	"github.com/juanesech/topo/constants"
 	"github.com/juanesech/topo/utils"
 	"go.mongodb.org/mongo-driver/mongo"
