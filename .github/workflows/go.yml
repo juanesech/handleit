@@ -27,9 +27,6 @@ jobs:
       working-directory: back
       run: go test -v ./...
 
-  codacy:
-    runs-on: ubuntu-latest
-    steps:
     - name: Codacy Analysis CLI
       uses: codacy/codacy-analysis-cli-action@v4.2.0
       with:
