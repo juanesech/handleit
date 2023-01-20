@@ -31,13 +31,15 @@ func Import(ctx *gin.Context) {
 		modsFromSource = getModulesFromFS(source.Address)
 
 	case "GitLab":
-		mp := gl.GetProjects(source, gl.GetGroup(source).ID)
+		mp := gl.GetProjects(source, source.Group)
 		folder := uuid.NewString()
 
 		for _, p := range mp {
 			utils.Clone(fmt.Sprintf("%s/%s", folder, p.Name), source.Auth, p.Url)
 		}
-		modsFromSource = getModulesFromFS(fmt.Sprintf("/tmp/%s", folder))
+		if len(mp) != 0 {
+			modsFromSource = getModulesFromFS(fmt.Sprintf("/tmp/%s", folder))
+		}
 	}
 
 	coll := db.GetCollection("modules")

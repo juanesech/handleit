@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/juanesech/topo/config"
 	"github.com/juanesech/topo/module"
+	log "github.com/sirupsen/logrus"
 )
-
 
 func setupRouter() *gin.Engine {
 	router := gin.Default()
@@ -23,6 +23,7 @@ func setupRouter() *gin.Engine {
 }
 
 func main() {
+	log.SetLevel(log.DebugLevel)
 	r := setupRouter()
 	r.Run()
 }

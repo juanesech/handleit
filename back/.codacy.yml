@@ -1,0 +1,4 @@
+languages:
+  go:
+    extensions:
+    - ".go"

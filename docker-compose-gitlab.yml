@@ -1,0 +1,53 @@
+version: '3.2'
+services:
+  back:
+    build: back/
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_SHCEMA=mongodb
+      - DB_ADDRESS=mongo:27017
+      - DB_USER=topo
+      - DB_PASS=topod3v
+      - DB_NAME=topo
+    links:
+      - mongo
+      - gitlab
+    restart: always
+    volumes:
+      - /home/juanesech/Projects/local_modules:/tmp/local_modules:z
+  mongo:
+    image: mongo:6.0.3
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=topo
+      - MONGO_INITDB_ROOT_PASSWORD=topod3v
+    volumes:
+      - ./mongo:/data/db:z
+  front:
+    build: front/
+    ports:
+      - "5173:5173"
+    links:
+      - back
+    restart: always
+    volumes:
+      - ./front:/code:Z
+  gitlab:
+    image: 'gitlab/gitlab-ce:15.7.5-ce.0'
+    restart: always
+    hostname: 'gitlab'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab'
+        # Add any other gitlab.rb configuration here, each on its own line
+    ports:
+      - '8081:80'
+      - '4443:443'
+      - '222:22'
+    volumes:
+      - '$GITLAB_HOME/config:/etc/gitlab:z'
+      - '$GITLAB_HOME/logs:/var/log/gitlab:z'
+      - '$GITLAB_HOME/data:/var/opt/gitlab:z'
+    shm_size: '256m'
