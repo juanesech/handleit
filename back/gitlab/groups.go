@@ -36,7 +36,7 @@ func GetGroup(source config.ModuleSource) Group {
 	log.Debug("Response: ", res, res.StatusCode())
 
 	if respGroup.IsEmpty() {
-		log.Errorf("Group with id %v is empty")
+		log.Errorf("Group with id %v is empty", respGroup.ID)
 	}
 
 	return respGroup

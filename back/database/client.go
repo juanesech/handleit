@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+
 	"github.com/juanesech/topo/constants"
 	"github.com/juanesech/topo/utils"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -16,6 +17,7 @@ func GetMongoClient() *mongo.Client {
 		SetServerAPIOptions(serverAPIOptions)
 
 	rp, err := readpref.New(readpref.PrimaryMode)
+	utils.CheckError(err)
 	clientOptions.SetReadPreference(rp)
 	clientOptions.SetDirect(true)
 
