@@ -41,7 +41,7 @@
     "@emotion/react": "^11.10.4",
     "axios": "^0.27.2",
     "bulma": "^0.9.4",
-    "daisyui": "^2.31.0",
+    "daisyui": "^2.46.1",
     "fontawesome-free": "^1.0.4",
     "node-sass": "^8.0.0",
     "sass": "^1.57.1"
